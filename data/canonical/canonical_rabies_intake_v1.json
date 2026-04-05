@@ -1,0 +1,1021 @@
+{
+  "schema_id": "canonical_rabies_intake_v1",
+  "title": "Canonical Rabies PEP Intake Checklist",
+  "version": "1.0.0",
+  "description": "Unified canonical intake checklist merging all questions from the WHO SEARO Rabies PEP Decision Tree and the Ontario (OPH) RPEP Clinician Decision Tool. Every question from both sources is preserved with exact original wording. Semantic duplicates are merged into single canonical questions with source_map and redundancy_group annotations. Additional clinically relevant questions are included with origin 'additional'.",
+  "sources": [
+    {
+      "key": "who",
+      "schema_id": "who_rpep_searo_intake_checklist_v1",
+      "title": "WHO SEARO Rabies PEP Clinician Intake Checklist",
+      "question_count": 22
+    },
+    {
+      "key": "oph",
+      "schema_id": "oph_rpep_intake_checklist_v1",
+      "title": "Ontario RPEP Clinician Intake Checklist",
+      "question_count": 27
+    }
+  ],
+  "validation": {
+    "who_total_questions": 22,
+    "who_merged": 6,
+    "who_unique": 16,
+    "who_preserved": 22,
+    "oph_total_questions": 27,
+    "oph_merged": 6,
+    "oph_unique": 21,
+    "oph_preserved": 27,
+    "additional_questions": 6,
+    "canonical_total": 49
+  },
+  "sections": [
+    { "id": "intake_status", "title": "Intake status" },
+    { "id": "exposure_context", "title": "Exposure context" },
+    { "id": "animal_species", "title": "Animal species identification" },
+    { "id": "bat_exposure_assessment", "title": "Bat exposure assessment" },
+    { "id": "exposure_characteristics", "title": "Exposure characteristics" },
+    { "id": "exposure_timing", "title": "Exposure timing" },
+    { "id": "high_priority_features", "title": "High-priority victim and exposure features" },
+    { "id": "wound_management", "title": "Wound management" },
+    { "id": "animal_clinical_features", "title": "Animal clinical features and risk assessment" },
+    { "id": "animal_testing", "title": "Animal rabies testing" },
+    { "id": "animal_availability_observation", "title": "Animal availability and observation" },
+    { "id": "patient_prior_vaccination", "title": "Patient prior vaccination history" },
+    { "id": "patient_current_status", "title": "Patient current clinical status" },
+    { "id": "resource_context", "title": "Resource context" }
+  ],
+  "questions": [
+    {
+      "id": "c01",
+      "display_order": 1,
+      "section": "intake_status",
+      "text": "Has the patient already started RPEP for this exposure?",
+      "origin": "oph",
+      "type": "documentation",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q01"]
+      },
+      "source_phrase": "Has the patient already started RPEP for this exposure?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c02",
+      "display_order": 2,
+      "section": "exposure_context",
+      "text": "What is the date and time of the exposure?",
+      "origin": "additional",
+      "type": "core",
+      "response_type": "datetime",
+      "options": [],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": []
+      },
+      "rationale": "Exact exposure date/time is essential for determining PEP urgency, observation windows, and whether thresholds such as the WHO 10-day rule apply. Both source checklists reference timing indirectly but neither captures the actual date.",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c03",
+      "display_order": 3,
+      "section": "exposure_context",
+      "text": "What is the geographic location where the exposure occurred?",
+      "origin": "additional",
+      "type": "core",
+      "response_type": "free_text",
+      "options": [],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": []
+      },
+      "rationale": "Geographic location determines regional rabies epidemiology and species-specific risk. OPH admin notes reference this as part of a thorough exposure history and provide travel-related guidance for exposures outside Canada.",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c04",
+      "display_order": 4,
+      "section": "animal_species",
+      "text": "Is the animal a mammal?",
+      "origin": "merged",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": ["q01"],
+        "oph_ids": ["q10"],
+        "who_text": "Is the animal a mammal?",
+        "who_source_phrase": "Animal: mammal?",
+        "oph_text": "Was the animal a mammal?",
+        "oph_source_phrase": "Was the animal a mammal?"
+      },
+      "redundancy_group": "animal_is_mammal",
+      "footnote_refs": {
+        "who": [],
+        "oph": ["ii"]
+      },
+      "inline_notes": []
+    },
+    {
+      "id": "c05",
+      "display_order": 5,
+      "section": "animal_species",
+      "text": "Is the animal a rodent?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": ["q02"],
+        "oph_ids": []
+      },
+      "source_phrase": "Animal: rodent?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c06",
+      "display_order": 6,
+      "section": "animal_species",
+      "text": "Was the animal a bat?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q02"]
+      },
+      "source_phrase": "Was the animal a bat?",
+      "footnote_refs": ["i"],
+      "inline_notes": []
+    },
+    {
+      "id": "c07",
+      "display_order": 7,
+      "section": "animal_species",
+      "text": "What type of mammal was involved?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "enum",
+      "options": [
+        { "value": "dog", "label": "Dog" },
+        { "value": "cat", "label": "Cat" },
+        { "value": "bat", "label": "Bat" },
+        { "value": "raccoon", "label": "Raccoon" },
+        { "value": "skunk", "label": "Skunk" },
+        { "value": "fox", "label": "Fox" },
+        { "value": "coyote", "label": "Coyote" },
+        { "value": "livestock", "label": "Livestock (horse, cow, sheep, goat)" },
+        { "value": "rodent", "label": "Rodent (squirrel, rat, mouse, chipmunk, etc.)" },
+        { "value": "rabbit_hare", "label": "Rabbit or hare" },
+        { "value": "other_mammal", "label": "Other mammal" },
+        { "value": "unknown", "label": "Unknown" }
+      ],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q13"]
+      },
+      "source_phrase": "What type of mammal was involved?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c08",
+      "display_order": 8,
+      "section": "bat_exposure_assessment",
+      "text": "Can exposure to bat saliva (or neural tissue) via bite, scratch, mucous membrane, or broken skin be ruled out?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q03"]
+      },
+      "source_phrase": "Can exposure to bat saliva (or neural tissue) via bite, scratch, mucous membrane, or broken skin be ruled out?",
+      "footnote_refs": ["i"],
+      "inline_notes": []
+    },
+    {
+      "id": "c09",
+      "display_order": 9,
+      "section": "bat_exposure_assessment",
+      "text": "Was a bat actually seen?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q04"]
+      },
+      "source_phrase": "Was a bat actually seen?",
+      "footnote_refs": ["i", "xii"],
+      "inline_notes": []
+    },
+    {
+      "id": "c10",
+      "display_order": 10,
+      "section": "bat_exposure_assessment",
+      "text": "Is the bat available for testing?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q05"]
+      },
+      "source_phrase": "Is the bat available for testing?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c11",
+      "display_order": 11,
+      "section": "bat_exposure_assessment",
+      "text": "Is the history suggestive of a bat?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q06"]
+      },
+      "source_phrase": "Is the history suggestive of a bat?",
+      "footnote_refs": ["i", "xii"],
+      "inline_notes": []
+    },
+    {
+      "id": "c12",
+      "display_order": 12,
+      "section": "bat_exposure_assessment",
+      "text": "Was there only minimal or uncertain contact with the bat?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q07"]
+      },
+      "source_phrase": "Was there only minimal or uncertain contact?",
+      "footnote_refs": ["i"],
+      "inline_notes": []
+    },
+    {
+      "id": "c13",
+      "display_order": 13,
+      "section": "bat_exposure_assessment",
+      "text": "Was the bat dead?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q08"]
+      },
+      "source_phrase": "Was the bat dead?",
+      "footnote_refs": ["i"],
+      "inline_notes": []
+    },
+    {
+      "id": "c14",
+      "display_order": 14,
+      "section": "bat_exposure_assessment",
+      "text": "Was the bat fully dried out (desiccated)?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q09"]
+      },
+      "source_phrase": "Was the bat fully dried out?",
+      "footnote_refs": ["i"],
+      "inline_notes": []
+    },
+    {
+      "id": "c15",
+      "display_order": 15,
+      "section": "exposure_characteristics",
+      "text": "Did any of the following occur?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "multiselect_any",
+      "items": [
+        {
+          "value": "bite",
+          "label": "Bite (any penetration of the skin by teeth)"
+        },
+        {
+          "value": "scratch_with_skin_break",
+          "label": "Scratch that broke skin"
+        },
+        {
+          "value": "saliva_on_broken_skin",
+          "label": "Saliva contacting broken skin"
+        },
+        {
+          "value": "saliva_on_mucosa",
+          "label": "Saliva contacting mucous membrane"
+        },
+        {
+          "value": "neural_tissue_on_broken_skin_or_mucosa",
+          "label": "Neural tissue contacting broken skin or mucous membrane"
+        }
+      ],
+      "group_evaluation": "any_yes_constitutes_relevant_exposure",
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q11"]
+      },
+      "source_phrase": "Did ANY of the following occur? - Bite / Scratch that broke skin / Saliva contacting broken skin / Saliva contacting mucosa / Neural tissue contacting broken skin or mucosa",
+      "footnote_refs": ["iii"],
+      "inline_notes": []
+    },
+    {
+      "id": "c16",
+      "display_order": 16,
+      "section": "exposure_characteristics",
+      "text": "What is the WHO wound / exposure category?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "enum",
+      "options": [
+        {
+          "value": "category_I",
+          "label": "Category I",
+          "who_definition": "Animal licks on intact skin, touching or feeding the animal",
+          "clinical_description": "Skin is intact"
+        },
+        {
+          "value": "category_II",
+          "label": "Category II",
+          "who_definition": "Minor scratches or abrasions, nibbling of uncovered skin",
+          "clinical_description": "Skin is broken but wound not bleeding"
+        },
+        {
+          "value": "category_III",
+          "label": "Category III",
+          "who_definition": "Transdermal bites or scratches, licks on broken skin, contamination of mucous membrane with saliva, exposure to a bat",
+          "clinical_description": "Skin is broken and wound bleeding, OR mucous membrane contaminated with saliva"
+        }
+      ],
+      "source_map": {
+        "who_ids": ["q17"],
+        "oph_ids": []
+      },
+      "source_phrase": "Skin is intact / Skin is broken but wound not bleeding / Skin is broken and wound bleeding OR mucous membrane contaminated with saliva",
+      "footnote_refs": [],
+      "inline_notes": [
+        "If exposure was to a bat, PEP for WHO wound category III should be started immediately."
+      ]
+    },
+    {
+      "id": "c17",
+      "display_order": 17,
+      "section": "exposure_characteristics",
+      "text": "What is the anatomical site of the wound or exposure?",
+      "origin": "additional",
+      "type": "core",
+      "response_type": "multiselect_any",
+      "items": [
+        { "value": "head", "label": "Head" },
+        { "value": "face", "label": "Face" },
+        { "value": "neck", "label": "Neck" },
+        { "value": "hands", "label": "Hands" },
+        { "value": "genitals", "label": "Genitals" },
+        { "value": "upper_extremity", "label": "Upper extremity (excluding hands)" },
+        { "value": "lower_extremity", "label": "Lower extremity" },
+        { "value": "torso", "label": "Torso" },
+        { "value": "mucous_membrane", "label": "Mucous membrane" },
+        { "value": "other", "label": "Other" }
+      ],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": []
+      },
+      "rationale": "Anatomical site determines innervation density (head, neck, face, genitals, hands are high-risk) and guides local RIG infiltration. WHO footnote 2 and q07 reference highly innervated areas; capturing the specific site enables automated high-risk flagging.",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c18",
+      "display_order": 18,
+      "section": "exposure_timing",
+      "text": "Did the exposure occur more than 10 days ago?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": ["q03"],
+        "oph_ids": []
+      },
+      "source_phrase": "Did the exposure occur >10 days ago?",
+      "footnote_refs": [],
+      "inline_notes": [
+        "If, during subsequent visits, the time since exposure exceeds 10 days and the animal is still alive, PEP can be discontinued."
+      ]
+    },
+    {
+      "id": "c19",
+      "display_order": 19,
+      "section": "exposure_timing",
+      "text": "Is the animal still alive?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": ["q04"],
+        "oph_ids": []
+      },
+      "source_phrase": "Is the animal still alive?",
+      "footnote_refs": ["1"],
+      "inline_notes": [
+        "If, during subsequent visits, the time since exposure exceeds 10 days and the animal is still alive, PEP can be discontinued."
+      ]
+    },
+    {
+      "id": "c20",
+      "display_order": 20,
+      "section": "high_priority_features",
+      "text": "Is the victim younger than 14 years?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "group_id": "high_priority_any",
+      "group_evaluation": "any_yes_triggers_start_pep_immediately",
+      "source_map": {
+        "who_ids": ["q05"],
+        "oph_ids": []
+      },
+      "source_phrase": "Is the victim <14 years?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c21",
+      "display_order": 21,
+      "section": "high_priority_features",
+      "text": "Does the victim have multiple or deep wounds?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "group_id": "high_priority_any",
+      "group_evaluation": "any_yes_triggers_start_pep_immediately",
+      "source_map": {
+        "who_ids": ["q06"],
+        "oph_ids": []
+      },
+      "source_phrase": "Does the victim have multiple or deep wounds?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c22",
+      "display_order": 22,
+      "section": "high_priority_features",
+      "text": "Does the victim have wounds in highly innervated areas?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "group_id": "high_priority_any",
+      "group_evaluation": "any_yes_triggers_start_pep_immediately",
+      "source_map": {
+        "who_ids": ["q07"],
+        "oph_ids": []
+      },
+      "source_phrase": "Does the victim have wounds in highly innervated areas?",
+      "footnote_refs": ["2"],
+      "inline_notes": []
+    },
+    {
+      "id": "c23",
+      "display_order": 23,
+      "section": "wound_management",
+      "text": "Has thorough wound washing with soap and water and antiseptic application been performed?",
+      "origin": "additional",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": []
+      },
+      "rationale": "WHO footnote 5 states wound washing is 'a life-saving practice especially for immunocompromised patients' and recommends 15 minutes of washing. OPH admin notes describe it as 'imperative and probably the most effective procedure in the prevention of rabies'. Neither checklist captures whether this critical first-aid step has been performed.",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c24",
+      "display_order": 24,
+      "section": "animal_clinical_features",
+      "text": "Did the animal show signs of disease consistent with or compatible with rabies?",
+      "origin": "merged",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": ["q08"],
+        "oph_ids": ["q14"],
+        "who_text": "Did the animal show any signs of disease consistent with rabies?",
+        "who_source_phrase": "Did the animal show any signs of disease consistent with rabies?",
+        "oph_text": "Did the animal display behaviour compatible with rabies?",
+        "oph_source_phrase": "Rabies-compatible animal behaviour?"
+      },
+      "redundancy_group": "animal_rabies_signs",
+      "footnote_refs": {
+        "who": ["3"],
+        "oph": ["iv"]
+      },
+      "inline_notes": []
+    },
+    {
+      "id": "c25",
+      "display_order": 25,
+      "section": "animal_clinical_features",
+      "text": "Did the animal die or disappear within 10 days of the exposure?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "group_id": "concerning_animal_features_any",
+      "group_evaluation": "any_yes_triggers_animal_vaccination_check",
+      "source_map": {
+        "who_ids": ["q09"],
+        "oph_ids": []
+      },
+      "source_phrase": "Did the animal die or disappear within 10 days of the exposure?",
+      "footnote_refs": ["1"],
+      "inline_notes": []
+    },
+    {
+      "id": "c26",
+      "display_order": 26,
+      "section": "animal_clinical_features",
+      "text": "Did the animal bite 2 or more people or animals?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "group_id": "concerning_animal_features_any",
+      "group_evaluation": "any_yes_triggers_animal_vaccination_check",
+      "source_map": {
+        "who_ids": ["q10"],
+        "oph_ids": []
+      },
+      "source_phrase": "Did the animal bite 2 or more people or animals?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c27",
+      "display_order": 27,
+      "section": "animal_clinical_features",
+      "text": "Was the animal feral or wild?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "group_id": "animal_ownership_tier",
+      "group_evaluation": "mutually_exclusive_ownership_tier",
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q15"]
+      },
+      "source_phrase": "Feral or wild?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c28",
+      "display_order": 28,
+      "section": "animal_clinical_features",
+      "text": "Was the animal a stray?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "group_id": "animal_ownership_tier",
+      "group_evaluation": "mutually_exclusive_ownership_tier",
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q16"]
+      },
+      "source_phrase": "Stray?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c29",
+      "display_order": 29,
+      "section": "animal_testing",
+      "text": "Has the animal been tested for rabies by a WOAH-recommended test?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": ["q11"],
+        "oph_ids": []
+      },
+      "source_phrase": "Has the animal been tested for rabies by a WOAH recommended test?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c30",
+      "display_order": 30,
+      "section": "animal_testing",
+      "text": "What is the animal rabies test result?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "enum",
+      "options": [
+        { "value": "positive", "label": "Test positive" },
+        { "value": "pending_or_inconclusive", "label": "Test pending / inconclusive" },
+        { "value": "negative", "label": "Test negative" },
+        { "value": "not_done", "label": "Not done" }
+      ],
+      "source_map": {
+        "who_ids": ["q12"],
+        "oph_ids": []
+      },
+      "source_phrase": "Test positive / Test pending / inconclusive / Test negative",
+      "footnote_refs": ["4"],
+      "inline_notes": []
+    },
+    {
+      "id": "c31",
+      "display_order": 31,
+      "section": "animal_availability_observation",
+      "text": "Is the animal available for investigation, quarantine, or rabies testing?",
+      "origin": "merged",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": ["q13"],
+        "oph_ids": ["q12"],
+        "who_text": "Is the animal available for investigation and quarantine?",
+        "who_source_phrase": "Is the animal available for investigation and quarantine?",
+        "oph_text": "Can the animal be identified and located for observation or rabies testing?",
+        "oph_source_phrase": "Can the animal be identified and located for observation or rabies testing?"
+      },
+      "redundancy_group": "animal_available_for_observation",
+      "footnote_refs": {
+        "who": ["1"],
+        "oph": []
+      },
+      "inline_notes": []
+    },
+    {
+      "id": "c32",
+      "display_order": 32,
+      "section": "animal_availability_observation",
+      "text": "Is the animal up-to-date on vaccination?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": ["q14"],
+        "oph_ids": []
+      },
+      "source_phrase": "Is the animal up-to-date on vaccination?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c33",
+      "display_order": 33,
+      "section": "animal_availability_observation",
+      "text": "Was the animal exposed to rabies risk in the last 12 months?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": ["q15"],
+        "oph_ids": []
+      },
+      "source_phrase": "Was the animal exposed to rabies risk in the last 12 months?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c34",
+      "display_order": 34,
+      "section": "animal_availability_observation",
+      "text": "Was the animal provoked to bite or scratch?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": ["q16"],
+        "oph_ids": []
+      },
+      "source_phrase": "Was the animal provoked to bite /scratch?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c35",
+      "display_order": 35,
+      "section": "patient_prior_vaccination",
+      "text": "Has the patient ever received any rabies vaccination?",
+      "origin": "merged",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": ["q19"],
+        "oph_ids": ["q17"],
+        "who_text": "Has the patient ever received any rabies vaccination?",
+        "who_source_phrase": "Patient: ever received any rabies vaccination?",
+        "oph_text": "Has the patient previously received any rabies vaccine?",
+        "oph_source_phrase": "Has the patient previously received rabies vaccine?"
+      },
+      "redundancy_group": "patient_prior_rabies_vaccination",
+      "footnote_refs": {
+        "who": ["7", "8"],
+        "oph": ["v"]
+      },
+      "inline_notes": []
+    },
+    {
+      "id": "c36",
+      "display_order": 36,
+      "section": "patient_prior_vaccination",
+      "text": "Has the patient completed a PEP/RPEP series in the past 3 months?",
+      "origin": "merged",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": ["q20"],
+        "oph_ids": ["q18"],
+        "who_text": "Has the patient completed PEP less than 3 months ago?",
+        "who_source_phrase": "Patient: completed PEP less than 3 months ago?",
+        "oph_text": "Did the patient complete an RPEP series in the past 3 months?",
+        "oph_source_phrase": "Did the patient complete an RPEP series in the past 3 months?"
+      },
+      "redundancy_group": "patient_recent_pep_completion",
+      "footnote_refs": {
+        "who": [],
+        "oph": ["v"]
+      },
+      "inline_notes": []
+    },
+    {
+      "id": "c37",
+      "display_order": 37,
+      "section": "patient_prior_vaccination",
+      "text": "Is complete and consistent documentation of prior vaccination available?",
+      "origin": "oph",
+      "type": "documentation",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q20"]
+      },
+      "source_phrase": "Is complete and consistent documentation available?",
+      "footnote_refs": ["v"],
+      "inline_notes": []
+    },
+    {
+      "id": "c38",
+      "display_order": 38,
+      "section": "patient_prior_vaccination",
+      "text": "Did the patient complete an RPEP series in the past?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q23"]
+      },
+      "source_phrase": "Did the patient complete an RPEP series in the past?",
+      "footnote_refs": ["v"],
+      "inline_notes": []
+    },
+    {
+      "id": "c39",
+      "display_order": 39,
+      "section": "patient_prior_vaccination",
+      "text": "Did the patient receive a valid primary series with documented adequate serologic response (≥0.5 IU/mL)?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q24"]
+      },
+      "source_phrase": "Did the patient receive a valid primary series with documented adequate serologic response (≥0.5 IU/mL)?",
+      "footnote_refs": ["vii", "ix"],
+      "inline_notes": []
+    },
+    {
+      "id": "c40",
+      "display_order": 40,
+      "section": "patient_prior_vaccination",
+      "text": "How many valid prior vaccine doses has the patient received (counting only doses meeting minimum interval criteria)?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "count_enum",
+      "options": [
+        { "value": "0", "label": "0 doses" },
+        { "value": "1", "label": "1 dose" },
+        { "value": "2", "label": "2 doses" },
+        { "value": "3_or_more", "label": "3 or more doses" },
+        { "value": "unknown", "label": "Unknown / not documented" }
+      ],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q25"]
+      },
+      "source_phrase": "How many valid prior vaccine doses did the patient receive?",
+      "footnote_refs": ["viii"],
+      "inline_notes": []
+    },
+    {
+      "id": "c41",
+      "display_order": 41,
+      "section": "patient_prior_vaccination",
+      "text": "Was the most recent prior dose received between 1 week and 1 month ago?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q26"]
+      },
+      "source_phrase": "Was the dose received between 1 week and 1 month ago?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c42",
+      "display_order": 42,
+      "section": "patient_prior_vaccination",
+      "text": "Was the second prior dose received less than 3 years ago?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q27"]
+      },
+      "source_phrase": "Was second dose less than 3 years ago?",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c43",
+      "display_order": 43,
+      "section": "patient_current_status",
+      "text": "Is the patient currently immunocompromised?",
+      "origin": "merged",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": ["q18"],
+        "oph_ids": ["q19"],
+        "who_text": "Is the patient immunocompromised?",
+        "who_source_phrase": "Patient: immunocompromised?",
+        "oph_text": "Is the patient currently immunocompromised or on chloroquine/hydroxychloroquine?",
+        "oph_source_phrase": "Is the patient currently immunocompromised or on chloroquine/hydroxychloroquine?"
+      },
+      "redundancy_group": "patient_immunocompromised_current",
+      "footnote_refs": {
+        "who": [],
+        "oph": ["vi"]
+      },
+      "inline_notes": []
+    },
+    {
+      "id": "c44",
+      "display_order": 44,
+      "section": "patient_current_status",
+      "text": "Is the patient currently moderate-to-severely immunocompromised or on chloroquine/hydroxychloroquine?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q21"]
+      },
+      "source_phrase": "Is the patient currently moderate-to-severely immunocompromised or on chloroquine/hydroxychloroquine?",
+      "footnote_refs": ["vi"],
+      "inline_notes": []
+    },
+    {
+      "id": "c45",
+      "display_order": 45,
+      "section": "patient_current_status",
+      "text": "Was the patient immunocompromised or on chloroquine/hydroxychloroquine at the time of previous vaccination?",
+      "origin": "oph",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": ["q22"]
+      },
+      "source_phrase": "Was the patient immunocompromised or on chloroquine/hydroxychloroquine at the time of previous vaccination?",
+      "footnote_refs": ["vi"],
+      "inline_notes": []
+    },
+    {
+      "id": "c46",
+      "display_order": 46,
+      "section": "patient_current_status",
+      "text": "Is the patient high-risk?",
+      "origin": "who",
+      "type": "core",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "source_map": {
+        "who_ids": ["q22"],
+        "oph_ids": []
+      },
+      "source_phrase": "Patient: high-risk?",
+      "footnote_refs": ["9"],
+      "inline_notes": []
+    },
+    {
+      "id": "c47",
+      "display_order": 47,
+      "section": "patient_current_status",
+      "text": "Is the patient currently pregnant?",
+      "origin": "additional",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": []
+      },
+      "rationale": "Pregnancy does not contraindicate rabies PEP, but it is clinically relevant for treatment counselling, monitoring, and documentation. WHO and national guidelines note that PEP should not be withheld in pregnancy given the fatal nature of rabies, but the clinician should be aware of pregnancy status.",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c48",
+      "display_order": 48,
+      "section": "patient_current_status",
+      "text": "Does the patient have any known allergies to rabies vaccine or rabies immunoglobulin components?",
+      "origin": "additional",
+      "type": "core",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": [],
+        "oph_ids": []
+      },
+      "rationale": "Allergies to vaccine components (e.g., egg protein in some formulations, neomycin) or to equine/human RIG products may require alternative products or desensitisation protocols. This is a standard safety check before any biologic administration.",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "c49",
+      "display_order": 49,
+      "section": "resource_context",
+      "text": "Is RIG/RmAbs availability limited?",
+      "origin": "who",
+      "type": "policy",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "source_map": {
+        "who_ids": ["q21"],
+        "oph_ids": []
+      },
+      "source_phrase": "RIG/RmABs availability: limited?",
+      "footnote_refs": [],
+      "inline_notes": []
+    }
+  ]
+}

@@ -1,0 +1,398 @@
+{
+  "schema_id": "oph_rpep_intake_checklist_v1",
+  "title": "Ontario RPEP Clinician Intake Checklist",
+  "version": "1.0.0",
+  "description": "Flat checklist of every clinical question derived from the Ontario Rabies Post-Exposure Prophylaxis (RPEP) clinician decision tool, structured as question nodes for a clinician-facing intake workflow.",
+  "source": {
+    "name": "Ontario Rabies Post-Exposure Prophylaxis Clinician Decision Tool",
+    "publisher": "Ontario",
+    "jurisdiction": "Ottawa, Ontario, Canada",
+    "reference_url": "https://www.ottawapublichealth.ca/hcprabies",
+    "quick_reference_url": "https://www.ottawapublichealth.ca/en/professionals-and-partners/resources/Documents/Appendix.01-Rabies-Quick-Reference-Guide-EN.pdf"
+  },
+  "design_notes": [
+    "Each question node maps to one decision diamond or grouped multi-check from the OPH RPEP flowchart.",
+    "Questions q15 (feral or wild?) and q16 (stray?) appear as distinct binary nodes in the source diagram; together they determine animal ownership tier alongside the type question q13.",
+    "Question q11 (bite/scratch/etc.) is a grouped multi-item check; any single 'yes' constitutes a relevant exposure per footnote iii.",
+    "response_type 'binary_yn' is used where only Y/N branches appear; 'ternary_ynu' where unknown is a clinically valid response.",
+    "footnote_refs uses Roman numeral strings (i–xii) matching the superscript annotations in the source document.",
+    "inline_notes captures verbatim callout-box text printed adjacent to the corresponding node.",
+    "source_phrase preserves the question text exactly as it appears in the source diagram.",
+    "q19 and q21 both address immunocompromise but capture distinct clinical contexts: q19 is assessed for current RPEP management eligibility; q21 is assessed when reviewing whether a prior vaccination history is reliable for an immunocompromised patient today.",
+    "q22 assesses immunocompromise at the time of prior vaccination, which affects whether a prior series is considered immunologically valid."
+  ],
+  "admin_notes": {
+    "immediate_management": "Thorough cleaning and flushing of the wound with soap and water is imperative and is probably the most effective procedure in the prevention of rabies. Care should be taken to clean the wound to its depth. Flushing for approximately 15 minutes is suggested. Some guidelines also suggest the application of a viricidal agent such as iodine-containing or alcohol solutions. Suturing the wound should be avoided if possible, and tetanus prophylaxis and antibiotics should be given as appropriate.",
+    "history": "A thorough exposure history is required to ensure an accurate risk assessment. This includes animal species and behaviour, type and timing of exposure, anatomic site, and geographic location. If the patient was previously vaccinated against rabies, collect a complete immunization history, including the number of doses, dates, route, product, immunocompromised status at the time of prior PrEP/PEP, and current immunocompromised status, as management depends on these details.",
+    "travel_related_exposures": "For exposures occurring outside Canada or involving animal species not listed, rabies epidemiology and risk vary significantly by country and region. While Public Health consultation can assist in determining the need for RPEP, clinicians may refer to: CDC Rabies Status by Country (https://www.cdc.gov/rabies/country-data/index.html); UKHSA Rabies Risks in Terrestrial Animals by Country (https://www.gov.uk/government/publications/rabies-risks-bycountry/rabies-risks-in-terrestrial-animals-by-country); WHO Global Burden of Dog-Transmitted Human Rabies (https://www.who.int/teams/control-of-neglected-tropical-diseases/rabies/epidemiology-and-burden).",
+    "biologics_availability": "If RPEP is indicated but RIG and/or rabies vaccine are not available at your facility, Ontario will arrange delivery of biologics, typically within 2–4 hours. Please have a recent patient weight available to determine RIG dosing and provide a call-back number to facilitate coordination.",
+    "followup": "Ontario will coordinate follow-up doses to support completion of the series, typically without requiring return to a healthcare setting. Indications for serologic testing may vary based on patient-specific factors."
+  },
+  "footnotes": {
+    "i": "Per the Canadian Immunization Guide: Bat exposure: Post-exposure rabies prophylaxis following bat exposure is recommended when there has been direct contact between a person and a bat, or, much less commonly, when saliva from the bat enters into an open wound or mucous membrane. Direct contact with a bat is defined as a contact between human skin and a bat (i.e., a bat touching or landing on a person, or a person touching a bat). Even very minor or transient direct contact between a person and a bat is considered an exposure warranting intervention because bites inflicted by bats may not be felt and may leave no visible bite marks. When there is no direct contact between a person and a bat and no exposure to saliva into an open wound or mucous membrane, the risk of rabies is extremely rare and rabies post-exposure prophylaxis is not recommended. Bat landing on clothing (adult): In an adult, a bat landing on clothing would require an intervention unless the adult is certain that the bat did not come into contact with their skin (e.g., bat landed on a very thick coat) and there was no saliva exposure into a wound or mucous membrane. Bat landing on clothing (child): In a child, a bat landing on clothing should be considered a reason for intervention, as a history to rule out direct contact with skin may not be reliable in a child. For 'bat in the room' scenarios, the Ontario Ministry of Health has stated that 'finding a bat in the room, even if the person was asleep, is not an indication for rabies post-exposure prophylaxis unless there is direct contact with the bat (i.e., bat touching skin, bat saliva into wound or mucous membrane)' (Memo from the Office of the Chief Medical Officer of Health, 1 Oct 2025). However, rabies post-exposure prophylaxis should be considered if the person is unable to provide a reliable history, such as with a young child or someone with cognitive impairment. In such situations, factors indicating that direct contact may have occurred include the individual waking up crying or upset while the bat was in the room, or observation of an obvious bite or scratch mark. Examples of situations that are NOT considered bat exposures (provided there is no evidence of direct contact with the bat or exposure of bat saliva or neural tissue to broken skin or mucous membranes): waking up in a room where a bat is flying or roosting; being in the same house as a bat for a period of time (including multiple days); being hissed at by a bat; handling or touching a dead bat that is clearly desiccated.",
+    "ii": "Birds, reptiles, amphibians and fish do not get rabies.",
+    "iii": "Per the Canadian Immunization Guide, a bite is defined as 'any penetration of the skin by teeth.' Non-bite exposures, other than organ or tissue transplants, have almost never been proven to cause rabies, and post-exposure prophylaxis is not indicated unless the non-bite exposure involves saliva or neural tissue being introduced into fresh, open cuts or scratches in skin or onto mucous membranes. Examples that are NOT rabies exposures: touching an animal; animal licking intact skin; contact with animal blood, urine, or feces; contact with animal fur; proximity to an animal without contact.",
+    "iv": "In most exposures, the animal is only observed briefly. Assessment should focus on features that could be reasonably observed by the patient at the time of exposure. While definitive animal assessment is made by a veterinarian, features that may be compatible with rabies include: Behavioural change, such as unprovoked aggression, marked agitation, abnormal apprehension, or other clearly abnormal behaviour (including becoming unusually quiet or depressed or unusually friendly, if evident). Daytime activity in typically nocturnal wildlife (e.g., raccoons, skunks, bats) may also be concerning. Neurologic illness, such as lack of coordination (ataxia), excessive salivation, paralysis, seizures, abnormal vocalization, dysphagia/inability to swallow, or other acute unexplained neurologic signs.",
+    "v": "When assessing rabies vaccination received outside Canada, the validity of prior doses may be uncertain (e.g., due to differences in vaccine product, PrEP or PEP schedule, or documentation). In Canada, only HDCV (e.g., Imovax) and PCECV (e.g., RabAvert) are currently used. If there is uncertainty about the vaccine product or schedule used, consult Public Health.",
+    "vi": "If the implications of immunocompromise for RPEP are uncertain, consult Public Health. Immunosuppressive agents should not be administered during the RPEP series unless essential for the treatment of other conditions.",
+    "vii": "For the purposes of assessing prior rabies immunization in immunocompromised individuals, a valid primary series (either from pre-exposure prophylaxis or previous RPEP) consists of at least 3 doses, where: second dose is ≥7 days after first dose; final dose is ≥14 days after previous dose; doses given <7 days after first dose are not counted.",
+    "viii": "For the purposes of assessing prior rabies immunization in immunocompetent individuals, count only doses that meet the following minimum interval criteria for current management: second dose must be ≥7 days after first dose (doses given <7 days after first dose are not counted toward prior immunization); third/booster dose must be ≥14 days after previous valid dose.",
+    "ix": "If an acceptable antibody concentration (≥0.5 IU/mL) is demonstrated, the vaccine course may be discontinued after at least 2 doses. Public Health will follow up on results and advise on continuation of the series.",
+    "x": "Contact Ontario by phone prior to administration to confirm the risk assessment and need for RPEP. If RPEP is indicated but RIG and/or rabies vaccine are not available at your facility, Ontario will arrange delivery of biologics, typically within 2–4 hours. Please have a recent patient weight available to determine RIG dosing and provide a call-back number to facilitate coordination.",
+    "xi": "Ontario will coordinate follow-up doses to support completion of the series, typically without requiring return to a healthcare setting. Indications for serologic testing may vary based on patient-specific factors.",
+    "xii": "Prior or same-day bat sightings in the location of exposure make a bat more likely as the source of exposure."
+  },
+  "sections": [
+    { "id": "intake_status",             "title": "Intake status" },
+    { "id": "bat_exposure_assessment",   "title": "Bat exposure assessment" },
+    { "id": "animal_species",            "title": "Animal species identification" },
+    { "id": "exposure_characteristics",  "title": "Exposure characteristics" },
+    { "id": "animal_risk_assessment",    "title": "Animal risk assessment" },
+    { "id": "patient_prior_vaccination", "title": "Patient prior vaccination history" },
+    { "id": "patient_current_status",    "title": "Patient current status" }
+  ],
+  "questions": [
+    {
+      "id": "q01",
+      "display_order": 1,
+      "section": "intake_status",
+      "source_phrase": "Has the patient already started RPEP for this exposure?",
+      "text": "Has the patient already started RPEP for this exposure?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q02",
+      "display_order": 2,
+      "section": "bat_exposure_assessment",
+      "source_phrase": "Was the animal a bat?",
+      "text": "Was the animal a bat?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": ["i"],
+      "inline_notes": []
+    },
+    {
+      "id": "q03",
+      "display_order": 3,
+      "section": "bat_exposure_assessment",
+      "source_phrase": "Can exposure to bat saliva (or neural tissue) via bite, scratch, mucous membrane, or broken skin be ruled out?",
+      "text": "Can exposure to bat saliva (or neural tissue) via bite, scratch, mucous membrane, or broken skin be ruled out?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": ["i"],
+      "inline_notes": []
+    },
+    {
+      "id": "q04",
+      "display_order": 4,
+      "section": "bat_exposure_assessment",
+      "source_phrase": "Was a bat actually seen?",
+      "text": "Was a bat actually seen?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["i", "xii"],
+      "inline_notes": []
+    },
+    {
+      "id": "q05",
+      "display_order": 5,
+      "section": "bat_exposure_assessment",
+      "source_phrase": "Is the bat available for testing?",
+      "text": "Is the bat available for testing?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q06",
+      "display_order": 6,
+      "section": "bat_exposure_assessment",
+      "source_phrase": "Is the history suggestive of a bat?",
+      "text": "Is the history suggestive of a bat?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["i", "xii"],
+      "inline_notes": []
+    },
+    {
+      "id": "q07",
+      "display_order": 7,
+      "section": "bat_exposure_assessment",
+      "source_phrase": "Was there only minimal or uncertain contact?",
+      "text": "Was there only minimal or uncertain contact with the bat?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": ["i"],
+      "inline_notes": []
+    },
+    {
+      "id": "q08",
+      "display_order": 8,
+      "section": "bat_exposure_assessment",
+      "source_phrase": "Was the bat dead?",
+      "text": "Was the bat dead?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["i"],
+      "inline_notes": []
+    },
+    {
+      "id": "q09",
+      "display_order": 9,
+      "section": "bat_exposure_assessment",
+      "source_phrase": "Was the bat fully dried out?",
+      "text": "Was the bat fully dried out (desiccated)?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["i"],
+      "inline_notes": []
+    },
+    {
+      "id": "q10",
+      "display_order": 10,
+      "section": "animal_species",
+      "source_phrase": "Was the animal a mammal?",
+      "text": "Was the animal a mammal?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": ["ii"],
+      "inline_notes": []
+    },
+    {
+      "id": "q11",
+      "display_order": 11,
+      "section": "exposure_characteristics",
+      "source_phrase": "Did ANY of the following occur? - Bite / Scratch that broke skin / Saliva contacting broken skin / Saliva contacting mucosa / Neural tissue contacting broken skin or mucosa",
+      "text": "Did any of the following occur?",
+      "response_type": "multiselect_any",
+      "items": [
+        {
+          "value": "bite",
+          "label": "Bite (any penetration of the skin by teeth)"
+        },
+        {
+          "value": "scratch_with_skin_break",
+          "label": "Scratch that broke skin"
+        },
+        {
+          "value": "saliva_on_broken_skin",
+          "label": "Saliva contacting broken skin"
+        },
+        {
+          "value": "saliva_on_mucosa",
+          "label": "Saliva contacting mucous membrane"
+        },
+        {
+          "value": "neural_tissue_on_broken_skin_or_mucosa",
+          "label": "Neural tissue contacting broken skin or mucous membrane"
+        }
+      ],
+      "group_evaluation": "any_yes_constitutes_relevant_exposure",
+      "footnote_refs": ["iii"],
+      "inline_notes": []
+    },
+    {
+      "id": "q12",
+      "display_order": 12,
+      "section": "animal_risk_assessment",
+      "source_phrase": "Can the animal be identified and located for observation or rabies testing?",
+      "text": "Can the animal be identified and located for observation or rabies testing?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q13",
+      "display_order": 13,
+      "section": "animal_risk_assessment",
+      "source_phrase": "What type of mammal was involved?",
+      "text": "What type of mammal was involved?",
+      "response_type": "enum",
+      "options": [
+        { "value": "dog",          "label": "Dog" },
+        { "value": "cat",          "label": "Cat" },
+        { "value": "bat",          "label": "Bat" },
+        { "value": "raccoon",      "label": "Raccoon" },
+        { "value": "skunk",        "label": "Skunk" },
+        { "value": "fox",          "label": "Fox" },
+        { "value": "coyote",       "label": "Coyote" },
+        { "value": "livestock",    "label": "Livestock (horse, cow, sheep, goat)" },
+        { "value": "rodent",       "label": "Rodent (squirrel, rat, mouse, chipmunk, etc.)" },
+        { "value": "rabbit_hare",  "label": "Rabbit or hare" },
+        { "value": "other_mammal", "label": "Other mammal" },
+        { "value": "unknown",      "label": "Unknown" }
+      ],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q14",
+      "display_order": 14,
+      "section": "animal_risk_assessment",
+      "source_phrase": "Rabies-compatible animal behaviour?",
+      "text": "Did the animal display behaviour compatible with rabies?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["iv"],
+      "inline_notes": []
+    },
+    {
+      "id": "q15",
+      "display_order": 15,
+      "section": "animal_risk_assessment",
+      "source_phrase": "Feral or wild?",
+      "text": "Was the animal feral or wild?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "group_id": "animal_ownership_tier",
+      "group_evaluation": "mutually_exclusive_ownership_tier",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q16",
+      "display_order": 16,
+      "section": "animal_risk_assessment",
+      "source_phrase": "Stray?",
+      "text": "Was the animal a stray?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "group_id": "animal_ownership_tier",
+      "group_evaluation": "mutually_exclusive_ownership_tier",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q17",
+      "display_order": 17,
+      "section": "patient_prior_vaccination",
+      "source_phrase": "Has the patient previously received rabies vaccine?",
+      "text": "Has the patient previously received any rabies vaccine?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["v"],
+      "inline_notes": []
+    },
+    {
+      "id": "q18",
+      "display_order": 18,
+      "section": "patient_prior_vaccination",
+      "source_phrase": "Did the patient complete an RPEP series in the past 3 months?",
+      "text": "Did the patient complete an RPEP series in the past 3 months?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["v"],
+      "inline_notes": []
+    },
+    {
+      "id": "q19",
+      "display_order": 19,
+      "section": "patient_current_status",
+      "source_phrase": "Is the patient currently immunocompromised or on chloroquine/hydroxychloroquine?",
+      "text": "Is the patient currently immunocompromised or on chloroquine/hydroxychloroquine?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["vi"],
+      "inline_notes": []
+    },
+    {
+      "id": "q20",
+      "display_order": 20,
+      "section": "patient_prior_vaccination",
+      "source_phrase": "Is complete and consistent documentation available?",
+      "text": "Is complete and consistent documentation of prior vaccination available?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": ["v"],
+      "inline_notes": []
+    },
+    {
+      "id": "q21",
+      "display_order": 21,
+      "section": "patient_current_status",
+      "source_phrase": "Is the patient currently moderate-to-severely immunocompromised or on chloroquine/hydroxychloroquine?",
+      "text": "Is the patient currently moderate-to-severely immunocompromised or on chloroquine/hydroxychloroquine?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["vi"],
+      "inline_notes": []
+    },
+    {
+      "id": "q22",
+      "display_order": 22,
+      "section": "patient_current_status",
+      "source_phrase": "Was the patient immunocompromised or on chloroquine/hydroxychloroquine at the time of previous vaccination?",
+      "text": "Was the patient immunocompromised or on chloroquine/hydroxychloroquine at the time of previous vaccination?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["vi"],
+      "inline_notes": []
+    },
+    {
+      "id": "q23",
+      "display_order": 23,
+      "section": "patient_prior_vaccination",
+      "source_phrase": "Did the patient complete an RPEP series in the past?",
+      "text": "Did the patient complete an RPEP series in the past?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["v"],
+      "inline_notes": []
+    },
+    {
+      "id": "q24",
+      "display_order": 24,
+      "section": "patient_prior_vaccination",
+      "source_phrase": "Did the patient receive a valid primary series with documented adequate serologic response (≥0.5 IU/mL)?",
+      "text": "Did the patient receive a valid primary series with documented adequate serologic response (≥0.5 IU/mL)?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["vii", "ix"],
+      "inline_notes": []
+    },
+    {
+      "id": "q25",
+      "display_order": 25,
+      "section": "patient_prior_vaccination",
+      "source_phrase": "How many valid prior vaccine doses did the patient receive?",
+      "text": "How many valid prior vaccine doses has the patient received (counting only doses meeting minimum interval criteria)?",
+      "response_type": "count_enum",
+      "options": [
+        { "value": "0",           "label": "0 doses" },
+        { "value": "1",           "label": "1 dose" },
+        { "value": "2",           "label": "2 doses" },
+        { "value": "3_or_more",   "label": "3 or more doses" },
+        { "value": "unknown",     "label": "Unknown / not documented" }
+      ],
+      "footnote_refs": ["viii"],
+      "inline_notes": []
+    },
+    {
+      "id": "q26",
+      "display_order": 26,
+      "section": "patient_prior_vaccination",
+      "source_phrase": "Was the dose received between 1 week and 1 month ago?",
+      "text": "Was the most recent prior dose received between 1 week and 1 month ago?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q27",
+      "display_order": 27,
+      "section": "patient_prior_vaccination",
+      "source_phrase": "Was second dose less than 3 years ago?",
+      "text": "Was the second prior dose received less than 3 years ago?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": [],
+      "inline_notes": []
+    }
+  ]
+}

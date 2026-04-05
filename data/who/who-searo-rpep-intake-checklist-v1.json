@@ -1,0 +1,331 @@
+{
+  "schema_id": "who_rpep_searo_intake_checklist_v1",
+  "title": "WHO SEARO Rabies PEP Clinician Intake Checklist",
+  "version": "1.0.0",
+  "description": "Flat checklist of every clinical question derived from the WHO SEARO Rabies PEP Decision Tree, structured as question nodes for a clinician-facing intake workflow.",
+  "source": {
+    "name": "WHO SEARO Rabies Post-Exposure Prophylaxis Decision Tree",
+    "citation": "WHO South-East Asia. Decide with Confidence: Rabies Post-Exposure Prophylaxis Decision Tree."
+  },
+  "design_notes": [
+    "Each question node maps to one decision diamond or grouped multi-check from the WHO SEARO flowchart.",
+    "Questions appearing in multiple flowchart branches (e.g. animal availability, vaccination status) are deduplicated here; routing logic belongs in the decision-tree schema.",
+    "response_type 'binary_yn' is used where the source flowchart shows only Y/N branches; 'ternary_ynu' where Y/U or N/U combined branches appear, indicating that 'unknown' is a valid clinical response.",
+    "group_id links questions that the source diagram evaluates together as a multi-any-yes block; group_evaluation describes the trigger logic.",
+    "footnote_refs maps each question to the numbered source footnote(s) that contextualise it for the clinician.",
+    "inline_notes captures verbatim callout-box text printed adjacent to the corresponding node in the source diagram.",
+    "source_phrase preserves the question text exactly as it appears in the source diagram."
+  ],
+  "workflow_notes": [
+    "If exposure was to a bat, PEP for WHO wound category III should be started immediately.",
+    "If, during subsequent visits, the time since exposure exceeds 10 days and the animal is still alive, PEP can be discontinued."
+  ],
+  "footnotes": {
+    "1": "Dogs, cats and domestic ferrets being healthy 10 days after exposure present no rabies risk and PEP is not indicated. The infectious periods of other animals are not well characterized, and a more conservative 14-day clinical investigation is recommended.",
+    "2": "Such as bites to the head, neck, face, genitals and hands.",
+    "3": "Clinical signs of rabies in an animal include hypersalivation, paralysis, lethargy, unprovoked abnormal aggression (e.g. biting two or more people or animals and/or inanimate objects), abnormal vocalization, diurnal activity of nocturnal species. Hydrophobia is not a sign of rabies in dogs.",
+    "4": "This risk assessment is made at one point in time with the available information. If new information is provided or the status of the animal changes, PEP might be indicated.",
+    "5": "Wash the wound thoroughly with copious amounts of water and soap for 15 min and apply an antiseptic. This is a life-saving practice especially for immunocompromised patients.",
+    "6": "When feasible, the RABV neutralizing antibody response should be determined 2–4 weeks after vaccination to assess whether an additional dose of vaccine is required.",
+    "7": "This includes Pre-Exposure Prophylaxis (PrEP), previous PEP, or patients beyond the 7th day of PEP.",
+    "8": "If PrEP or previous PEP was received: shorten the current vaccination schedule accordingly.",
+    "9": "Patient with multiple bites, deep wounds, bites to highly innervated parts of the body (such as head, neck, face, genitals and hands), severe immunodeficiency, bites from an animal with probable (clinically) or confirmed (laboratory) rabies, exposure to a bat (bite, scratch or exposure of mucous membrane)."
+  },
+  "sections": [
+    { "id": "animal_species",                  "title": "Animal species" },
+    { "id": "exposure_timing",                 "title": "Exposure timing" },
+    { "id": "high_priority_features",          "title": "High-priority victim and exposure features" },
+    { "id": "animal_clinical_features",        "title": "Concerning animal features" },
+    { "id": "animal_testing",                  "title": "Animal rabies testing" },
+    { "id": "animal_availability_vaccination", "title": "Animal availability and vaccination status" },
+    { "id": "wound_category",                  "title": "WHO wound / exposure category" },
+    { "id": "patient_factors",                 "title": "Patient factors" },
+    { "id": "resource_context",                "title": "Resource context" }
+  ],
+  "questions": [
+    {
+      "id": "q01",
+      "display_order": 1,
+      "section": "animal_species",
+      "source_phrase": "Animal: mammal?",
+      "text": "Is the animal a mammal?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q02",
+      "display_order": 2,
+      "section": "animal_species",
+      "source_phrase": "Animal: rodent?",
+      "text": "Is the animal a rodent?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q03",
+      "display_order": 3,
+      "section": "exposure_timing",
+      "source_phrase": "Did the exposure occur >10 days ago?",
+      "text": "Did the exposure occur more than 10 days ago?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": [],
+      "inline_notes": [
+        "If, during subsequent visits, the time since exposure exceeds 10 days and the animal is still alive, PEP can be discontinued."
+      ]
+    },
+    {
+      "id": "q04",
+      "display_order": 4,
+      "section": "exposure_timing",
+      "source_phrase": "Is the animal still alive?",
+      "text": "Is the animal still alive?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["1"],
+      "inline_notes": [
+        "If, during subsequent visits, the time since exposure exceeds 10 days and the animal is still alive, PEP can be discontinued."
+      ]
+    },
+    {
+      "id": "q05",
+      "display_order": 5,
+      "section": "high_priority_features",
+      "source_phrase": "Is the victim <14 years?",
+      "text": "Is the victim younger than 14 years?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "group_id": "high_priority_any",
+      "group_evaluation": "any_yes_triggers_start_pep_immediately",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q06",
+      "display_order": 6,
+      "section": "high_priority_features",
+      "source_phrase": "Does the victim have multiple or deep wounds?",
+      "text": "Does the victim have multiple or deep wounds?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "group_id": "high_priority_any",
+      "group_evaluation": "any_yes_triggers_start_pep_immediately",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q07",
+      "display_order": 7,
+      "section": "high_priority_features",
+      "source_phrase": "Does the victim have wounds in highly innervated areas?",
+      "text": "Does the victim have wounds in highly innervated areas?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "group_id": "high_priority_any",
+      "group_evaluation": "any_yes_triggers_start_pep_immediately",
+      "footnote_refs": ["2"],
+      "inline_notes": []
+    },
+    {
+      "id": "q08",
+      "display_order": 8,
+      "section": "animal_clinical_features",
+      "source_phrase": "Did the animal show any signs of disease consistent with rabies?",
+      "text": "Did the animal show any signs of disease consistent with rabies?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "group_id": "concerning_animal_features_any",
+      "group_evaluation": "any_yes_triggers_animal_vaccination_check",
+      "footnote_refs": ["3"],
+      "inline_notes": []
+    },
+    {
+      "id": "q09",
+      "display_order": 9,
+      "section": "animal_clinical_features",
+      "source_phrase": "Did the animal die or disappear within 10 days of the exposure?",
+      "text": "Did the animal die or disappear within 10 days of the exposure?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "group_id": "concerning_animal_features_any",
+      "group_evaluation": "any_yes_triggers_animal_vaccination_check",
+      "footnote_refs": ["1"],
+      "inline_notes": []
+    },
+    {
+      "id": "q10",
+      "display_order": 10,
+      "section": "animal_clinical_features",
+      "source_phrase": "Did the animal bite 2 or more people or animals?",
+      "text": "Did the animal bite 2 or more people or animals?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "group_id": "concerning_animal_features_any",
+      "group_evaluation": "any_yes_triggers_animal_vaccination_check",
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q11",
+      "display_order": 11,
+      "section": "animal_testing",
+      "source_phrase": "Has the animal been tested for rabies by a WOAH recommended test?",
+      "text": "Has the animal been tested for rabies by a WOAH-recommended test?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q12",
+      "display_order": 12,
+      "section": "animal_testing",
+      "source_phrase": "Test positive / Test pending / inconclusive / Test negative",
+      "text": "What is the animal rabies test result?",
+      "response_type": "enum",
+      "options": [
+        { "value": "positive",               "label": "Test positive" },
+        { "value": "pending_or_inconclusive", "label": "Test pending / inconclusive" },
+        { "value": "negative",               "label": "Test negative" },
+        { "value": "not_done",               "label": "Not done" }
+      ],
+      "footnote_refs": ["4"],
+      "inline_notes": []
+    },
+    {
+      "id": "q13",
+      "display_order": 13,
+      "section": "animal_availability_vaccination",
+      "source_phrase": "Is the animal available for investigation and quarantine?",
+      "text": "Is the animal available for investigation and quarantine?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["1"],
+      "inline_notes": []
+    },
+    {
+      "id": "q14",
+      "display_order": 14,
+      "section": "animal_availability_vaccination",
+      "source_phrase": "Is the animal up-to-date on vaccination?",
+      "text": "Is the animal up-to-date on vaccination?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q15",
+      "display_order": 15,
+      "section": "animal_availability_vaccination",
+      "source_phrase": "Was the animal exposed to rabies risk in the last 12 months?",
+      "text": "Was the animal exposed to rabies risk in the last 12 months?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q16",
+      "display_order": 16,
+      "section": "animal_availability_vaccination",
+      "source_phrase": "Was the animal provoked to bite /scratch?",
+      "text": "Was the animal provoked to bite or scratch?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q17",
+      "display_order": 17,
+      "section": "wound_category",
+      "source_phrase": "Skin is intact / Skin is broken but wound not bleeding / Skin is broken and wound bleeding OR mucous membrane contaminated with saliva",
+      "text": "What is the WHO wound / exposure category?",
+      "response_type": "enum",
+      "options": [
+        {
+          "value": "category_I",
+          "label": "Category I",
+          "who_definition": "Animal licks on intact skin, touching or feeding the animal",
+          "clinical_description": "Skin is intact"
+        },
+        {
+          "value": "category_II",
+          "label": "Category II",
+          "who_definition": "Minor scratches or abrasions, nibbling of uncovered skin",
+          "clinical_description": "Skin is broken but wound not bleeding"
+        },
+        {
+          "value": "category_III",
+          "label": "Category III",
+          "who_definition": "Transdermal bites or scratches, licks on broken skin, contamination of mucous membrane with saliva, exposure to a bat",
+          "clinical_description": "Skin is broken and wound bleeding, OR mucous membrane contaminated with saliva"
+        }
+      ],
+      "footnote_refs": [],
+      "inline_notes": [
+        "If exposure was to a bat, PEP for WHO wound category III should be started immediately."
+      ]
+    },
+    {
+      "id": "q18",
+      "display_order": 18,
+      "section": "patient_factors",
+      "source_phrase": "Patient: immunocompromised?",
+      "text": "Is the patient immunocompromised?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q19",
+      "display_order": 19,
+      "section": "patient_factors",
+      "source_phrase": "Patient: ever received any rabies vaccination?",
+      "text": "Has the patient ever received any rabies vaccination?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": ["7", "8"],
+      "inline_notes": []
+    },
+    {
+      "id": "q20",
+      "display_order": 20,
+      "section": "patient_factors",
+      "source_phrase": "Patient: completed PEP less than 3 months ago?",
+      "text": "Has the patient completed PEP less than 3 months ago?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q21",
+      "display_order": 21,
+      "section": "resource_context",
+      "source_phrase": "RIG/RmABs availability: limited?",
+      "text": "Is RIG/RmAbs availability limited?",
+      "response_type": "ternary_ynu",
+      "options": ["yes", "no", "unknown"],
+      "footnote_refs": [],
+      "inline_notes": []
+    },
+    {
+      "id": "q22",
+      "display_order": 22,
+      "section": "resource_context",
+      "source_phrase": "Patient: high-risk?",
+      "text": "Is the patient high-risk?",
+      "response_type": "binary_yn",
+      "options": ["yes", "no"],
+      "footnote_refs": ["9"],
+      "inline_notes": []
+    }
+  ]
+}

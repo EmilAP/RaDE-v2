@@ -7,6 +7,7 @@
 import type { AssessmentInput, CaseEnvelope, EngineResult } from "./types";
 import { runEngine } from "./engine";
 import { buildCase, buildAssessment, createEnvelope } from "./envelope";
+import { mapAnswersToEngineInput, type IntakeAnswers } from "./intake";
 
 export type AssessmentResult = {
   envelope: CaseEnvelope;
@@ -19,4 +20,18 @@ export function runAssessment(input: AssessmentInput): AssessmentResult {
   const assessment = buildAssessment(engineResult, clinicalCase);
   const envelope = createEnvelope(clinicalCase, assessment);
   return { envelope, engine_result: engineResult };
+}
+
+// ── Intake-driven pipeline ─────────────────────────────────────────────────
+
+export type IntakeAssessmentResult = AssessmentResult & {
+  mapped_input: AssessmentInput;
+};
+
+export function runIntakeAssessment(
+  answers: IntakeAnswers,
+): IntakeAssessmentResult {
+  const mappedInput = mapAnswersToEngineInput(answers);
+  const result = runAssessment(mappedInput);
+  return { ...result, mapped_input: mappedInput };
 }

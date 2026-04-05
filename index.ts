@@ -24,6 +24,18 @@ export type {
 
 // Pipeline
 export { runAssessment, type AssessmentResult } from "./core/pipeline";
+export {
+  runIntakeAssessment,
+  type IntakeAssessmentResult,
+} from "./core/pipeline";
+
+// Intake
+export {
+  mapAnswersToEngineInput,
+  loadChecklist,
+  type IntakeAnswers,
+  type CanonicalChecklist,
+} from "./core/intake";
 
 // Engine (for advanced usage)
 export { runEngine } from "./core/engine";
