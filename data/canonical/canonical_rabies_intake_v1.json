@@ -11,7 +11,7 @@
       "question_count": 22
     },
     {
-      "key": "oph",
+      "key": "on",
       "schema_id": "oph_rpep_intake_checklist_v1",
       "title": "Ontario RPEP Clinician Intake Checklist",
       "question_count": 27
@@ -51,7 +51,7 @@
       "display_order": 1,
       "section": "intake_status",
       "text": "Has the patient already started RPEP for this exposure?",
-      "origin": "oph",
+      "origin": "on",
       "type": "documentation",
       "response_type": "binary_yn",
       "options": ["yes", "no"],
@@ -93,7 +93,7 @@
         "who_ids": [],
         "oph_ids": []
       },
-      "rationale": "Geographic location determines regional rabies epidemiology and species-specific risk. OPH admin notes reference this as part of a thorough exposure history and provide travel-related guidance for exposures outside Canada.",
+      "rationale": "Geographic location determines regional rabies epidemiology and species-specific risk. ON admin notes reference this as part of a thorough exposure history and provide travel-related guidance for exposures outside Canada.",
       "footnote_refs": [],
       "inline_notes": []
     },
@@ -117,7 +117,7 @@
       "redundancy_group": "animal_is_mammal",
       "footnote_refs": {
         "who": [],
-        "oph": ["ii"]
+        "on": ["ii"]
       },
       "inline_notes": []
     },
@@ -143,7 +143,7 @@
       "display_order": 6,
       "section": "animal_species",
       "text": "Was the animal a bat?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "binary_yn",
       "options": ["yes", "no"],
@@ -160,7 +160,7 @@
       "display_order": 7,
       "section": "animal_species",
       "text": "What type of mammal was involved?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "enum",
       "options": [
@@ -190,7 +190,7 @@
       "display_order": 8,
       "section": "bat_exposure_assessment",
       "text": "Can exposure to bat saliva (or neural tissue) via bite, scratch, mucous membrane, or broken skin be ruled out?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "binary_yn",
       "options": ["yes", "no"],
@@ -207,7 +207,7 @@
       "display_order": 9,
       "section": "bat_exposure_assessment",
       "text": "Was a bat actually seen?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "ternary_ynu",
       "options": ["yes", "no", "unknown"],
@@ -224,7 +224,7 @@
       "display_order": 10,
       "section": "bat_exposure_assessment",
       "text": "Is the bat available for testing?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "ternary_ynu",
       "options": ["yes", "no", "unknown"],
@@ -241,7 +241,7 @@
       "display_order": 11,
       "section": "bat_exposure_assessment",
       "text": "Is the history suggestive of a bat?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "ternary_ynu",
       "options": ["yes", "no", "unknown"],
@@ -258,7 +258,7 @@
       "display_order": 12,
       "section": "bat_exposure_assessment",
       "text": "Was there only minimal or uncertain contact with the bat?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "binary_yn",
       "options": ["yes", "no"],
@@ -275,7 +275,7 @@
       "display_order": 13,
       "section": "bat_exposure_assessment",
       "text": "Was the bat dead?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "ternary_ynu",
       "options": ["yes", "no", "unknown"],
@@ -292,7 +292,7 @@
       "display_order": 14,
       "section": "bat_exposure_assessment",
       "text": "Was the bat fully dried out (desiccated)?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "ternary_ynu",
       "options": ["yes", "no", "unknown"],
@@ -309,7 +309,7 @@
       "display_order": 15,
       "section": "exposure_characteristics",
       "text": "Did any of the following occur?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "multiselect_any",
       "items": [
@@ -517,7 +517,7 @@
         "who_ids": [],
         "oph_ids": []
       },
-      "rationale": "WHO footnote 5 states wound washing is 'a life-saving practice especially for immunocompromised patients' and recommends 15 minutes of washing. OPH admin notes describe it as 'imperative and probably the most effective procedure in the prevention of rabies'. Neither checklist captures whether this critical first-aid step has been performed.",
+      "rationale": "WHO footnote 5 states wound washing is 'a life-saving practice especially for immunocompromised patients' and recommends 15 minutes of washing. ON admin notes describe it as 'imperative and probably the most effective procedure in the prevention of rabies'. Neither checklist captures whether this critical first-aid step has been performed.",
       "footnote_refs": [],
       "inline_notes": []
     },
@@ -541,7 +541,7 @@
       "redundancy_group": "animal_rabies_signs",
       "footnote_refs": {
         "who": ["3"],
-        "oph": ["iv"]
+        "on": ["iv"]
       },
       "inline_notes": []
     },
@@ -588,7 +588,7 @@
       "display_order": 27,
       "section": "animal_clinical_features",
       "text": "Was the animal feral or wild?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "binary_yn",
       "options": ["yes", "no"],
@@ -607,7 +607,7 @@
       "display_order": 28,
       "section": "animal_clinical_features",
       "text": "Was the animal a stray?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "binary_yn",
       "options": ["yes", "no"],
@@ -680,7 +680,7 @@
       "redundancy_group": "animal_available_for_observation",
       "footnote_refs": {
         "who": ["1"],
-        "oph": []
+        "on": []
       },
       "inline_notes": []
     },
@@ -755,7 +755,7 @@
       "redundancy_group": "patient_prior_rabies_vaccination",
       "footnote_refs": {
         "who": ["7", "8"],
-        "oph": ["v"]
+        "on": ["v"]
       },
       "inline_notes": []
     },
@@ -779,7 +779,7 @@
       "redundancy_group": "patient_recent_pep_completion",
       "footnote_refs": {
         "who": [],
-        "oph": ["v"]
+        "on": ["v"]
       },
       "inline_notes": []
     },
@@ -788,7 +788,7 @@
       "display_order": 37,
       "section": "patient_prior_vaccination",
       "text": "Is complete and consistent documentation of prior vaccination available?",
-      "origin": "oph",
+      "origin": "on",
       "type": "documentation",
       "response_type": "binary_yn",
       "options": ["yes", "no"],
@@ -805,7 +805,7 @@
       "display_order": 38,
       "section": "patient_prior_vaccination",
       "text": "Did the patient complete an RPEP series in the past?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "ternary_ynu",
       "options": ["yes", "no", "unknown"],
@@ -822,7 +822,7 @@
       "display_order": 39,
       "section": "patient_prior_vaccination",
       "text": "Did the patient receive a valid primary series with documented adequate serologic response (≥0.5 IU/mL)?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "ternary_ynu",
       "options": ["yes", "no", "unknown"],
@@ -839,7 +839,7 @@
       "display_order": 40,
       "section": "patient_prior_vaccination",
       "text": "How many valid prior vaccine doses has the patient received (counting only doses meeting minimum interval criteria)?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "count_enum",
       "options": [
@@ -862,7 +862,7 @@
       "display_order": 41,
       "section": "patient_prior_vaccination",
       "text": "Was the most recent prior dose received between 1 week and 1 month ago?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "binary_yn",
       "options": ["yes", "no"],
@@ -879,7 +879,7 @@
       "display_order": 42,
       "section": "patient_prior_vaccination",
       "text": "Was the second prior dose received less than 3 years ago?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "binary_yn",
       "options": ["yes", "no"],
@@ -911,7 +911,7 @@
       "redundancy_group": "patient_immunocompromised_current",
       "footnote_refs": {
         "who": [],
-        "oph": ["vi"]
+        "on": ["vi"]
       },
       "inline_notes": []
     },
@@ -920,7 +920,7 @@
       "display_order": 44,
       "section": "patient_current_status",
       "text": "Is the patient currently moderate-to-severely immunocompromised or on chloroquine/hydroxychloroquine?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "ternary_ynu",
       "options": ["yes", "no", "unknown"],
@@ -937,7 +937,7 @@
       "display_order": 45,
       "section": "patient_current_status",
       "text": "Was the patient immunocompromised or on chloroquine/hydroxychloroquine at the time of previous vaccination?",
-      "origin": "oph",
+      "origin": "on",
       "type": "core",
       "response_type": "ternary_ynu",
       "options": ["yes", "no", "unknown"],

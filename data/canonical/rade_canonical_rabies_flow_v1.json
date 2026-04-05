@@ -12,10 +12,10 @@
       "citation": "WHO South-East Asia. Decide with Confidence: Rabies Post-Exposure Prophylaxis Decision Tree."
     },
     {
-      "key": "oph",
+      "key": "on",
       "title": "Ontario RPEP Clinician Decision Tool",
       "publisher": "Ontario Public Health",
-      "jurisdiction": "Ottawa, Ontario, Canada"
+      "jurisdiction": "Ontario, Canada"
     }
   ],
 
@@ -70,7 +70,7 @@
         ],
         "source_trace": {
           "who": [],
-          "oph": ["q01"]
+          "on": ["q01"]
         },
         "manual_notes": ""
       },
@@ -102,7 +102,7 @@
         ],
         "source_trace": {
           "who": ["q01", "q02"],
-          "oph": ["q02", "q10", "q13"]
+          "on": ["q02", "q10", "q13"]
         },
         "manual_notes": "c05 (is rodent) and c07 (mammal type enum) both contribute to host taxon derivation. See derived fact df_host_taxon."
       },
@@ -111,7 +111,7 @@
         "label": "Bat Exposure Assessment",
         "node_type": "assessment",
         "domain_type": "bat_exposure",
-        "description": "Evaluates bat-specific exposure details per OPH bat sub-tree. Determines whether bat contact can be ruled out, whether a bat was actually seen, and whether the bat is available/testable/desiccated.",
+        "description": "Evaluates bat-specific exposure details per ON bat sub-tree. Determines whether bat contact can be ruled out, whether a bat was actually seen, and whether the bat is available/testable/desiccated.",
         "input_fields": ["c06", "c08", "c09", "c10", "c11", "c12", "c13", "c14"],
         "derived_fact_ids": ["df_bat_contact_ruled_out", "df_bat_available_for_testing", "df_bat_desiccated", "df_bat_exposure_confidence"],
         "decision_logic": "TODO_manual_logic",
@@ -144,16 +144,16 @@
         ],
         "source_trace": {
           "who": [],
-          "oph": ["q02", "q03", "q04", "q05", "q06", "q07", "q08", "q09"]
+          "on": ["q02", "q03", "q04", "q05", "q06", "q07", "q08", "q09"]
         },
-        "manual_notes": "This sub-tree is primarily OPH-derived. WHO handles bats via wound category III auto-escalation and bat_policy_supersedes. The two approaches must be reconciled here."
+        "manual_notes": "This sub-tree is primarily ON-derived. WHO handles bats via wound category III auto-escalation and bat_policy_supersedes. The two approaches must be reconciled here."
       },
       {
         "node_id": "n04_exposure_relevance",
         "label": "Relevant Exposure Determination",
         "node_type": "assessment",
         "domain_type": "exposure_classification",
-        "description": "Determines whether a clinically relevant exposure occurred. Evaluates both OPH exposure type (bite, scratch, saliva, neural tissue) and WHO wound category (I/II/III).",
+        "description": "Determines whether a clinically relevant exposure occurred. Evaluates both ON exposure type (bite, scratch, saliva, neural tissue) and WHO wound category (I/II/III).",
         "input_fields": ["c15", "c16", "c17"],
         "derived_fact_ids": ["df_relevant_exposure", "df_who_wound_category", "df_exposure_type_detail"],
         "decision_logic": "TODO_manual_logic",
@@ -171,7 +171,7 @@
         ],
         "source_trace": {
           "who": ["q17"],
-          "oph": ["q11"]
+          "on": ["q11"]
         },
         "manual_notes": "Must preserve WHO category II vs III distinction — this determines RIG eligibility downstream. c15 and c16 may produce conflicting signals; reconciliation logic needed."
       },
@@ -198,7 +198,7 @@
         ],
         "source_trace": {
           "who": ["q03", "q04"],
-          "oph": []
+          "on": []
         },
         "manual_notes": "The 10-day rule applies primarily to dogs, cats, and ferrets per WHO footnote 1. Other species require 14-day observation. This node must be taxon-aware."
       },
@@ -225,7 +225,7 @@
         ],
         "source_trace": {
           "who": ["q05", "q06", "q07"],
-          "oph": []
+          "on": []
         },
         "manual_notes": "High-priority flag should persist through the rest of the flow and influence endpoint urgency even if a downstream node routes to observe/test."
       },
@@ -257,9 +257,9 @@
         ],
         "source_trace": {
           "who": ["q08", "q09", "q10", "q14", "q15", "q16"],
-          "oph": ["q14", "q15", "q16"]
+          "on": ["q14", "q15", "q16"]
         },
-        "manual_notes": "WHO concerning features group uses any-yes logic. OPH behaviour assessment has distinct footnote criteria (iv). Animal vaccination status (c32) modifies risk but does not eliminate it."
+        "manual_notes": "WHO concerning features group uses any-yes logic. ON behaviour assessment has distinct footnote criteria (iv). Animal vaccination status (c32) modifies risk but does not eliminate it."
       },
       {
         "node_id": "n08_animal_availability",
@@ -289,9 +289,9 @@
         ],
         "source_trace": {
           "who": ["q13"],
-          "oph": ["q12"]
+          "on": ["q12"]
         },
-        "manual_notes": "This is the merged animal availability gate. WHO 'available for quarantine' and OPH 'identified and located' have subtly different meanings. Policy overlay po01 modifies feasibility."
+        "manual_notes": "This is the merged animal availability gate. WHO 'available for quarantine' and ON 'identified and located' have subtly different meanings. Policy overlay po01 modifies feasibility."
       },
       {
         "node_id": "n09_animal_testing",
@@ -331,7 +331,7 @@
         ],
         "source_trace": {
           "who": ["q11", "q12"],
-          "oph": ["q05"]
+          "on": ["q05"]
         },
         "manual_notes": "WHO footnote 4: risk assessment is point-in-time. If animal status changes, reassessment is needed. Test-negative exit requires WOAH-recommended method per WHO."
       },
@@ -363,9 +363,9 @@
         ],
         "source_trace": {
           "who": ["q19", "q20"],
-          "oph": ["q17", "q18", "q20", "q23", "q24", "q25", "q26", "q27"]
+          "on": ["q17", "q18", "q20", "q23", "q24", "q25", "q26", "q27"]
         },
-        "manual_notes": "OPH has a complex sub-tree for prior vaccination with dose counting, interval validation, and serology requirements. WHO uses simpler yes/no prior vaccination + PEP <3 months. Both must be represented. OPH footnote v: validity of vaccine received outside Canada may be uncertain."
+        "manual_notes": "OPH has a complex sub-tree for prior vaccination with dose counting, interval validation, and serology requirements. WHO uses simpler yes/no prior vaccination + PEP <3 months. Both must be represented. ON footnote v: validity of vaccine received outside Canada may be uncertain."
       },
       {
         "node_id": "n11_patient_modifiers",
@@ -395,7 +395,7 @@
         ],
         "source_trace": {
           "who": ["q18", "q22"],
-          "oph": ["q19", "q21", "q22"]
+          "on": ["q19", "q21", "q22"]
         },
         "manual_notes": "OPH distinguishes c43 (any immunocompromise) from c44 (moderate-to-severe). c45 (immunocompromised at time of prior vaccination) affects validity of prior series — must feed back to df_prior_vaccination_reliable. WHO footnote 9 defines high-risk composite."
       },
@@ -437,7 +437,7 @@
         ],
         "source_trace": {
           "who": ["q17"],
-          "oph": []
+          "on": []
         },
         "manual_notes": "This is the central treatment-intensity routing node. WHO category II vs III distinction is safety-critical: Category III = vaccine + RIG; Category II = vaccine only. Must also account for prior vaccination status modifying the regimen."
       },
@@ -469,9 +469,9 @@
         ],
         "source_trace": {
           "who": ["q21", "q22"],
-          "oph": []
+          "on": []
         },
-        "manual_notes": "WHO resource-limited pathway. WHO footnote 9 defines high-risk patients who should receive priority RIG allocation. OPH operates in a resource-available context but still has biologics coordination (footnote x)."
+        "manual_notes": "WHO resource-limited pathway. WHO footnote 9 defines high-risk patients who should receive priority RIG allocation. ON operates in a resource-available context but still has biologics coordination (footnote x)."
       },
       {
         "node_id": "n14_continue_existing_rpep",
@@ -496,7 +496,7 @@
         ],
         "source_trace": {
           "who": [],
-          "oph": ["q01"]
+          "on": ["q01"]
         },
         "manual_notes": ""
       }
@@ -516,7 +516,7 @@
       },
       "source_trace": {
         "who": ["footnote 1"],
-        "oph": []
+        "on": []
       },
       "manual_notes": ""
     },
@@ -532,7 +532,7 @@
       },
       "source_trace": {
         "who": ["q11", "q12"],
-        "oph": ["q05"]
+        "on": ["q05"]
       },
       "manual_notes": ""
     },
@@ -546,7 +546,7 @@
       },
       "source_trace": {
         "who": ["footnote 3"],
-        "oph": ["footnote iv"]
+        "on": ["footnote iv"]
       },
       "manual_notes": ""
     },
@@ -562,7 +562,7 @@
       },
       "source_trace": {
         "who": [],
-        "oph": ["footnote x"]
+        "on": ["footnote x"]
       },
       "manual_notes": ""
     },
@@ -579,7 +579,7 @@
       },
       "source_trace": {
         "who": ["q21"],
-        "oph": ["footnote x"]
+        "on": ["footnote x"]
       },
       "manual_notes": ""
     }
@@ -653,7 +653,7 @@
     },
     {
       "fact_id": "df_exposure_type_detail",
-      "label": "Detailed exposure types (preserved from OPH multiselect)",
+      "label": "Detailed exposure types (preserved from ON multiselect)",
       "type": "string_array",
       "source_fields": ["c15"],
       "derivation": "TODO_manual_logic: pass-through from c15 items"
@@ -795,7 +795,7 @@
     },
     {
       "fact_id": "df_valid_prior_series",
-      "label": "Patient has a valid prior vaccination series (per OPH interval criteria + serology)",
+      "label": "Patient has a valid prior vaccination series (per ON interval criteria + serology)",
       "type": "boolean",
       "source_fields": ["c37", "c38", "c39", "c40"],
       "derivation": "TODO_manual_logic"
@@ -1066,7 +1066,7 @@
     },
     {
       "rule_id": "vr10",
-      "description": "All source traces must account for every WHO question (q01–q22) and every OPH question (q01–q27) at least once across all nodes.",
+      "description": "All source traces must account for every WHO question (q01–q22) and every ON question (q01–q27) at least once across all nodes.",
       "status": "TODO_validate"
     }
   ],

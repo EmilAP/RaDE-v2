@@ -6,12 +6,12 @@
   "source": {
     "name": "Ontario Rabies Post-Exposure Prophylaxis Clinician Decision Tool",
     "publisher": "Ontario",
-    "jurisdiction": "Ottawa, Ontario, Canada",
+    "jurisdiction": "Ontario, Canada",
     "reference_url": "https://www.ottawapublichealth.ca/hcprabies",
     "quick_reference_url": "https://www.ottawapublichealth.ca/en/professionals-and-partners/resources/Documents/Appendix.01-Rabies-Quick-Reference-Guide-EN.pdf"
   },
   "design_notes": [
-    "Each question node maps to one decision diamond or grouped multi-check from the OPH RPEP flowchart.",
+    "Each question node maps to one decision diamond or grouped multi-check from the ON RPEP flowchart.",
     "Questions q15 (feral or wild?) and q16 (stray?) appear as distinct binary nodes in the source diagram; together they determine animal ownership tier alongside the type question q13.",
     "Question q11 (bite/scratch/etc.) is a grouped multi-item check; any single 'yes' constitutes a relevant exposure per footnote iii.",
     "response_type 'binary_yn' is used where only Y/N branches appear; 'ternary_ynu' where unknown is a clinically valid response.",
