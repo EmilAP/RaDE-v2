@@ -1,0 +1,1083 @@
+{
+  "schema_id": "rade_canonical_rabies_flow_v1",
+  "title": "Canonical Rabies PEP Decision Flow",
+  "version": "0.1.0",
+  "status": "skeleton",
+  "description": "Skeleton decision flow for rabies post-exposure prophylaxis. Merges WHO SEARO and Ontario (OPH) clinical logic into a single canonical structure. All branch conditions are placeholders for manual completion.",
+
+  "sources": [
+    {
+      "key": "who",
+      "title": "WHO SEARO Rabies PEP Decision Tree",
+      "citation": "WHO South-East Asia. Decide with Confidence: Rabies Post-Exposure Prophylaxis Decision Tree."
+    },
+    {
+      "key": "oph",
+      "title": "Ontario RPEP Clinician Decision Tool",
+      "publisher": "Ontario Public Health",
+      "jurisdiction": "Ottawa, Ontario, Canada"
+    }
+  ],
+
+  "design_principles": [
+    "Each node represents one clinical decision point or assessment gate.",
+    "Nodes consume intake answers and derived facts; they do not re-ask questions.",
+    "Branch conditions reference derived_fact_ids, not raw intake question IDs.",
+    "Policy overlays modify branch behaviour without altering the core flow structure.",
+    "Endpoints are terminal nodes that produce a recommendation and action set.",
+    "All placeholder logic is marked TODO_manual_* for human authoring."
+  ],
+
+  "intake_dependency": {
+    "schema_id": "canonical_rabies_intake_v1",
+    "description": "This flow consumes answers from the canonical rabies intake checklist. Intake question IDs are referenced in node input_fields as c01–c49."
+  },
+
+  "outputs": {
+    "primary": "endpoint recommendation (recommendation_class_id + action set)",
+    "secondary": [
+      "risk_tier",
+      "confidence",
+      "audit_trail",
+      "follow_up_tasks",
+      "policy_overlay_flags"
+    ]
+  },
+
+  "flow": {
+    "entry_node": "n01_start",
+    "nodes": [
+      {
+        "node_id": "n01_start",
+        "label": "Start / Triage",
+        "node_type": "gate",
+        "domain_type": "triage",
+        "description": "Entry point. Checks whether this is a new assessment or a continuation of existing RPEP.",
+        "input_fields": ["c01"],
+        "derived_fact_ids": [],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: patient already on RPEP",
+            "target_node": "n14_continue_existing_rpep",
+            "label": "Already on RPEP"
+          },
+          {
+            "condition": "TODO_manual_condition: new assessment",
+            "target_node": "n02_species_gate",
+            "label": "New assessment"
+          }
+        ],
+        "source_trace": {
+          "who": [],
+          "oph": ["q01"]
+        },
+        "manual_notes": ""
+      },
+      {
+        "node_id": "n02_species_gate",
+        "label": "Animal Species Gate",
+        "node_type": "gate",
+        "domain_type": "species_identification",
+        "description": "Determines whether the animal is a mammal, and if so, whether it is a bat. Non-mammals exit immediately.",
+        "input_fields": ["c04", "c06", "c07"],
+        "derived_fact_ids": ["df_is_mammal", "df_is_bat", "df_host_taxon"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: not a mammal",
+            "target_node": "e01_no_pep",
+            "label": "Non-mammal → no PEP"
+          },
+          {
+            "condition": "TODO_manual_condition: bat confirmed or suspected",
+            "target_node": "n03_bat_assessment",
+            "label": "Bat pathway"
+          },
+          {
+            "condition": "TODO_manual_condition: mammal, not bat",
+            "target_node": "n04_exposure_relevance",
+            "label": "Non-bat mammal"
+          }
+        ],
+        "source_trace": {
+          "who": ["q01", "q02"],
+          "oph": ["q02", "q10", "q13"]
+        },
+        "manual_notes": "c05 (is rodent) and c07 (mammal type enum) both contribute to host taxon derivation. See derived fact df_host_taxon."
+      },
+      {
+        "node_id": "n03_bat_assessment",
+        "label": "Bat Exposure Assessment",
+        "node_type": "assessment",
+        "domain_type": "bat_exposure",
+        "description": "Evaluates bat-specific exposure details per OPH bat sub-tree. Determines whether bat contact can be ruled out, whether a bat was actually seen, and whether the bat is available/testable/desiccated.",
+        "input_fields": ["c06", "c08", "c09", "c10", "c11", "c12", "c13", "c14"],
+        "derived_fact_ids": ["df_bat_contact_ruled_out", "df_bat_available_for_testing", "df_bat_desiccated", "df_bat_exposure_confidence"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: bat contact ruled out",
+            "target_node": "e01_no_pep",
+            "label": "Contact ruled out → no PEP"
+          },
+          {
+            "condition": "TODO_manual_condition: desiccated dead bat, no saliva/tissue exposure",
+            "target_node": "e01_no_pep",
+            "label": "Desiccated bat → no PEP"
+          },
+          {
+            "condition": "TODO_manual_condition: bat available for testing",
+            "target_node": "n09_animal_testing",
+            "label": "Bat available → test"
+          },
+          {
+            "condition": "TODO_manual_condition: bat not available, minimal/uncertain contact only",
+            "target_node": "e06_expert_consult",
+            "label": "Minimal contact → consult"
+          },
+          {
+            "condition": "TODO_manual_condition: bat not available, contact not ruled out",
+            "target_node": "n10_prior_vaccination",
+            "label": "Bat exposure confirmed → assess patient"
+          }
+        ],
+        "source_trace": {
+          "who": [],
+          "oph": ["q02", "q03", "q04", "q05", "q06", "q07", "q08", "q09"]
+        },
+        "manual_notes": "This sub-tree is primarily OPH-derived. WHO handles bats via wound category III auto-escalation and bat_policy_supersedes. The two approaches must be reconciled here."
+      },
+      {
+        "node_id": "n04_exposure_relevance",
+        "label": "Relevant Exposure Determination",
+        "node_type": "assessment",
+        "domain_type": "exposure_classification",
+        "description": "Determines whether a clinically relevant exposure occurred. Evaluates both OPH exposure type (bite, scratch, saliva, neural tissue) and WHO wound category (I/II/III).",
+        "input_fields": ["c15", "c16", "c17"],
+        "derived_fact_ids": ["df_relevant_exposure", "df_who_wound_category", "df_exposure_type_detail"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: no relevant exposure (category I, no skin break, no mucous membrane)",
+            "target_node": "e01_no_pep",
+            "label": "No relevant exposure → no PEP"
+          },
+          {
+            "condition": "TODO_manual_condition: relevant exposure confirmed",
+            "target_node": "n05_exposure_timing",
+            "label": "Relevant exposure → continue"
+          }
+        ],
+        "source_trace": {
+          "who": ["q17"],
+          "oph": ["q11"]
+        },
+        "manual_notes": "Must preserve WHO category II vs III distinction — this determines RIG eligibility downstream. c15 and c16 may produce conflicting signals; reconciliation logic needed."
+      },
+      {
+        "node_id": "n05_exposure_timing",
+        "label": "Exposure Timing Assessment",
+        "node_type": "assessment",
+        "domain_type": "exposure_timing",
+        "description": "Evaluates time since exposure. WHO 10-day rule: if >10 days and animal is alive and healthy, PEP may be discontinued or not started.",
+        "input_fields": ["c02", "c18", "c19"],
+        "derived_fact_ids": ["df_exposure_over_10_days", "df_animal_alive_at_10_days"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: >10 days and animal alive and healthy",
+            "target_node": "e01_no_pep",
+            "label": "10-day rule met → no PEP"
+          },
+          {
+            "condition": "TODO_manual_condition: within window or animal status unknown",
+            "target_node": "n06_high_priority_features",
+            "label": "Continue assessment"
+          }
+        ],
+        "source_trace": {
+          "who": ["q03", "q04"],
+          "oph": []
+        },
+        "manual_notes": "The 10-day rule applies primarily to dogs, cats, and ferrets per WHO footnote 1. Other species require 14-day observation. This node must be taxon-aware."
+      },
+      {
+        "node_id": "n06_high_priority_features",
+        "label": "High-Priority Victim and Exposure Features",
+        "node_type": "assessment",
+        "domain_type": "priority_triage",
+        "description": "WHO high-priority group: any-yes from child <14, multiple/deep wounds, highly innervated area triggers immediate PEP start regardless of downstream assessment.",
+        "input_fields": ["c17", "c20", "c21", "c22"],
+        "derived_fact_ids": ["df_is_child", "df_has_severe_wounds", "df_highly_innervated_site", "df_high_priority_flag"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: any high-priority feature present",
+            "target_node": "n10_prior_vaccination",
+            "label": "High priority → fast-track to patient assessment"
+          },
+          {
+            "condition": "TODO_manual_condition: no high-priority features",
+            "target_node": "n07_animal_clinical_signs",
+            "label": "Standard pathway"
+          }
+        ],
+        "source_trace": {
+          "who": ["q05", "q06", "q07"],
+          "oph": []
+        },
+        "manual_notes": "High-priority flag should persist through the rest of the flow and influence endpoint urgency even if a downstream node routes to observe/test."
+      },
+      {
+        "node_id": "n07_animal_clinical_signs",
+        "label": "Animal Clinical Signs Assessment",
+        "node_type": "assessment",
+        "domain_type": "animal_risk",
+        "description": "Evaluates concerning animal features: rabies-compatible signs/behaviour, death or disappearance within 10 days, multiple victims. Also evaluates ownership tier (owned, stray, feral/wild) and provocation.",
+        "input_fields": ["c24", "c25", "c26", "c27", "c28", "c32", "c33", "c34"],
+        "derived_fact_ids": ["df_animal_rabies_signs", "df_animal_died_disappeared", "df_animal_multiple_victims", "df_animal_ownership_tier", "df_animal_vaccinated", "df_animal_provoked", "df_concerning_animal_features_flag"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: concerning animal features present",
+            "target_node": "n08_animal_availability",
+            "label": "Concerning features → check availability"
+          },
+          {
+            "condition": "TODO_manual_condition: no concerning features, animal vaccinated, provoked exposure",
+            "target_node": "n08_animal_availability",
+            "label": "Lower risk → check availability"
+          },
+          {
+            "condition": "TODO_manual_condition: default",
+            "target_node": "n08_animal_availability",
+            "label": "Continue to availability"
+          }
+        ],
+        "source_trace": {
+          "who": ["q08", "q09", "q10", "q14", "q15", "q16"],
+          "oph": ["q14", "q15", "q16"]
+        },
+        "manual_notes": "WHO concerning features group uses any-yes logic. OPH behaviour assessment has distinct footnote criteria (iv). Animal vaccination status (c32) modifies risk but does not eliminate it."
+      },
+      {
+        "node_id": "n08_animal_availability",
+        "label": "Animal Availability and Observation Pathway",
+        "node_type": "decision",
+        "domain_type": "animal_investigation",
+        "description": "Determines whether the animal is available for observation or testing. Routes to testing if available, or to patient assessment if not.",
+        "input_fields": ["c31"],
+        "derived_fact_ids": ["df_animal_available"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: animal available for observation/testing",
+            "target_node": "n09_animal_testing",
+            "label": "Available → observe/test"
+          },
+          {
+            "condition": "TODO_manual_condition: animal not available",
+            "target_node": "n10_prior_vaccination",
+            "label": "Unavailable → assess patient"
+          },
+          {
+            "condition": "TODO_manual_condition: animal availability unknown",
+            "target_node": "n10_prior_vaccination",
+            "label": "Unknown → assess patient (conservative)"
+          }
+        ],
+        "source_trace": {
+          "who": ["q13"],
+          "oph": ["q12"]
+        },
+        "manual_notes": "This is the merged animal availability gate. WHO 'available for quarantine' and OPH 'identified and located' have subtly different meanings. Policy overlay po01 modifies feasibility."
+      },
+      {
+        "node_id": "n09_animal_testing",
+        "label": "Animal Testing and Observation",
+        "node_type": "decision",
+        "domain_type": "animal_investigation",
+        "description": "Evaluates whether the animal has been or can be tested for rabies, and what the test result is. Also handles the observation-period pathway.",
+        "input_fields": ["c29", "c30"],
+        "derived_fact_ids": ["df_animal_tested", "df_animal_test_result"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: test positive",
+            "target_node": "n10_prior_vaccination",
+            "label": "Positive → assess patient for PEP"
+          },
+          {
+            "condition": "TODO_manual_condition: test negative (WOAH-recommended test)",
+            "target_node": "e01_no_pep",
+            "label": "Negative → no PEP"
+          },
+          {
+            "condition": "TODO_manual_condition: test pending or inconclusive",
+            "target_node": "e02_observe_test",
+            "label": "Pending → observe and reassess"
+          },
+          {
+            "condition": "TODO_manual_condition: not tested, observation feasible",
+            "target_node": "e02_observe_test",
+            "label": "Observe animal"
+          },
+          {
+            "condition": "TODO_manual_condition: not tested, observation not feasible",
+            "target_node": "n10_prior_vaccination",
+            "label": "Cannot test/observe → assess patient"
+          }
+        ],
+        "source_trace": {
+          "who": ["q11", "q12"],
+          "oph": ["q05"]
+        },
+        "manual_notes": "WHO footnote 4: risk assessment is point-in-time. If animal status changes, reassessment is needed. Test-negative exit requires WOAH-recommended method per WHO."
+      },
+      {
+        "node_id": "n10_prior_vaccination",
+        "label": "Prior Rabies Vaccination Assessment",
+        "node_type": "assessment",
+        "domain_type": "patient_vaccination_history",
+        "description": "Evaluates patient's prior rabies vaccination or PEP history. Determines whether a shortened regimen (no RIG, fewer doses) is appropriate.",
+        "input_fields": ["c35", "c36", "c37", "c38", "c39", "c40", "c41", "c42"],
+        "derived_fact_ids": ["df_prior_vaccination", "df_recent_pep_complete", "df_valid_prior_series", "df_prior_dose_count", "df_prior_vaccination_reliable"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: completed PEP within 3 months",
+            "target_node": "e06_expert_consult",
+            "label": "Very recent PEP → consult"
+          },
+          {
+            "condition": "TODO_manual_condition: previously vaccinated with valid series",
+            "target_node": "n11_patient_modifiers",
+            "label": "Previously vaccinated → modified regimen"
+          },
+          {
+            "condition": "TODO_manual_condition: no prior vaccination or unknown",
+            "target_node": "n11_patient_modifiers",
+            "label": "Vaccine-naive → full regimen"
+          }
+        ],
+        "source_trace": {
+          "who": ["q19", "q20"],
+          "oph": ["q17", "q18", "q20", "q23", "q24", "q25", "q26", "q27"]
+        },
+        "manual_notes": "OPH has a complex sub-tree for prior vaccination with dose counting, interval validation, and serology requirements. WHO uses simpler yes/no prior vaccination + PEP <3 months. Both must be represented. OPH footnote v: validity of vaccine received outside Canada may be uncertain."
+      },
+      {
+        "node_id": "n11_patient_modifiers",
+        "label": "Current Patient Modifiers",
+        "node_type": "assessment",
+        "domain_type": "patient_status",
+        "description": "Evaluates patient-specific modifiers: immunocompromise (current and historical), WHO high-risk composite flag, pregnancy, allergies.",
+        "input_fields": ["c43", "c44", "c45", "c46", "c47", "c48"],
+        "derived_fact_ids": ["df_immunocompromised_current", "df_immunocompromised_severe", "df_immunocompromised_at_prior_vax", "df_who_high_risk", "df_pregnant", "df_vaccine_allergy"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: immunocompromised — may invalidate prior vaccination, requires serology",
+            "target_node": "n12_wound_category_routing",
+            "label": "Immunocompromised → route with modifier"
+          },
+          {
+            "condition": "TODO_manual_condition: WHO high-risk flag",
+            "target_node": "n12_wound_category_routing",
+            "label": "High-risk → route with modifier"
+          },
+          {
+            "condition": "TODO_manual_condition: no significant modifiers",
+            "target_node": "n12_wound_category_routing",
+            "label": "Standard → route"
+          }
+        ],
+        "source_trace": {
+          "who": ["q18", "q22"],
+          "oph": ["q19", "q21", "q22"]
+        },
+        "manual_notes": "OPH distinguishes c43 (any immunocompromise) from c44 (moderate-to-severe). c45 (immunocompromised at time of prior vaccination) affects validity of prior series — must feed back to df_prior_vaccination_reliable. WHO footnote 9 defines high-risk composite."
+      },
+      {
+        "node_id": "n12_wound_category_routing",
+        "label": "Wound Category and Treatment Intensity Routing",
+        "node_type": "decision",
+        "domain_type": "treatment_determination",
+        "description": "Routes to appropriate endpoint based on WHO wound category (determines RIG eligibility), host risk tier, accumulated flags, and patient modifiers.",
+        "input_fields": [],
+        "derived_fact_ids": ["df_who_wound_category", "df_host_risk_tier", "df_high_priority_flag", "df_prior_vaccination_reliable", "df_immunocompromised_current", "df_concerning_animal_features_flag"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: WHO category III or high-priority or high-risk host, no prior vaccination",
+            "target_node": "e03_start_rpep",
+            "label": "Full PEP + RIG"
+          },
+          {
+            "condition": "TODO_manual_condition: WHO category III, previously vaccinated with valid series",
+            "target_node": "e03_start_rpep",
+            "label": "Shortened PEP, no RIG"
+          },
+          {
+            "condition": "TODO_manual_condition: WHO category II, no prior vaccination",
+            "target_node": "e03_start_rpep",
+            "label": "PEP without RIG"
+          },
+          {
+            "condition": "TODO_manual_condition: animal available, lower risk",
+            "target_node": "e02_observe_test",
+            "label": "Observe/test first"
+          },
+          {
+            "condition": "TODO_manual_condition: conflicting or insufficient data",
+            "target_node": "e06_expert_consult",
+            "label": "Expert review"
+          }
+        ],
+        "source_trace": {
+          "who": ["q17"],
+          "oph": []
+        },
+        "manual_notes": "This is the central treatment-intensity routing node. WHO category II vs III distinction is safety-critical: Category III = vaccine + RIG; Category II = vaccine only. Must also account for prior vaccination status modifying the regimen."
+      },
+      {
+        "node_id": "n13_resource_check",
+        "label": "Resource Availability Check",
+        "node_type": "gate",
+        "domain_type": "resource_context",
+        "description": "Checks whether RIG/RmAbs and vaccine are available. Routes to appropriate endpoint variant based on resource constraints.",
+        "input_fields": ["c49"],
+        "derived_fact_ids": ["df_rig_limited"],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: resources available",
+            "target_node": "e03_start_rpep",
+            "label": "Proceed with PEP"
+          },
+          {
+            "condition": "TODO_manual_condition: RIG limited, patient is high-risk per WHO footnote 9",
+            "target_node": "e04_start_rpep_contact_ph",
+            "label": "Prioritize RIG + contact PH"
+          },
+          {
+            "condition": "TODO_manual_condition: RIG limited, patient is not high-risk",
+            "target_node": "e04_start_rpep_contact_ph",
+            "label": "Vaccine without RIG + contact PH"
+          }
+        ],
+        "source_trace": {
+          "who": ["q21", "q22"],
+          "oph": []
+        },
+        "manual_notes": "WHO resource-limited pathway. WHO footnote 9 defines high-risk patients who should receive priority RIG allocation. OPH operates in a resource-available context but still has biologics coordination (footnote x)."
+      },
+      {
+        "node_id": "n14_continue_existing_rpep",
+        "label": "Continue Existing RPEP",
+        "node_type": "decision",
+        "domain_type": "treatment_continuation",
+        "description": "Patient has already started RPEP. Determine if the series should continue, be modified, or if a new assessment is needed for a re-exposure.",
+        "input_fields": ["c01"],
+        "derived_fact_ids": [],
+        "decision_logic": "TODO_manual_logic",
+        "branches": [
+          {
+            "condition": "TODO_manual_condition: same exposure, series in progress",
+            "target_node": "e05_continue_rpep",
+            "label": "Continue current series"
+          },
+          {
+            "condition": "TODO_manual_condition: new exposure during existing series",
+            "target_node": "n02_species_gate",
+            "label": "New exposure → full reassessment"
+          }
+        ],
+        "source_trace": {
+          "who": [],
+          "oph": ["q01"]
+        },
+        "manual_notes": ""
+      }
+    ]
+  },
+
+  "policy_overlays": [
+    {
+      "overlay_id": "po01_animal_observation_feasibility",
+      "label": "Animal Observation Feasibility",
+      "description": "Whether 10-day (dog/cat/ferret) or 14-day (other species) animal observation is operationally feasible in the jurisdiction.",
+      "modifies_nodes": ["n08_animal_availability", "n09_animal_testing"],
+      "parameters": {
+        "observation_feasible": "TODO_manual_condition",
+        "observation_period_days": "TODO_manual_value",
+        "species_specific_periods": "TODO_manual_value"
+      },
+      "source_trace": {
+        "who": ["footnote 1"],
+        "oph": []
+      },
+      "manual_notes": ""
+    },
+    {
+      "overlay_id": "po02_animal_testing_availability",
+      "label": "Animal Testing Availability",
+      "description": "Whether WOAH-recommended rabies testing is available and reliable in the jurisdiction.",
+      "modifies_nodes": ["n09_animal_testing"],
+      "parameters": {
+        "testing_available": "TODO_manual_condition",
+        "testing_reliability": "TODO_manual_value",
+        "turnaround_days": "TODO_manual_value"
+      },
+      "source_trace": {
+        "who": ["q11", "q12"],
+        "oph": ["q05"]
+      },
+      "manual_notes": ""
+    },
+    {
+      "overlay_id": "po03_veterinary_assessment_feasibility",
+      "label": "Veterinary Assessment Feasibility",
+      "description": "Whether veterinary clinical assessment of the animal (for rabies-compatible signs) is available.",
+      "modifies_nodes": ["n07_animal_clinical_signs"],
+      "parameters": {
+        "vet_assessment_available": "TODO_manual_condition"
+      },
+      "source_trace": {
+        "who": ["footnote 3"],
+        "oph": ["footnote iv"]
+      },
+      "manual_notes": ""
+    },
+    {
+      "overlay_id": "po04_public_health_consultation",
+      "label": "Public Health Consultation Availability",
+      "description": "Whether public health consultation is available and required prior to RPEP initiation or for travel-related exposures.",
+      "modifies_nodes": ["e04_start_rpep_contact_ph", "e06_expert_consult"],
+      "parameters": {
+        "ph_consultation_available": "TODO_manual_condition",
+        "ph_required_before_rpep": "TODO_manual_condition",
+        "ph_contact_method": "TODO_manual_value"
+      },
+      "source_trace": {
+        "who": [],
+        "oph": ["footnote x"]
+      },
+      "manual_notes": ""
+    },
+    {
+      "overlay_id": "po05_biologics_availability",
+      "label": "Biologics Availability",
+      "description": "Whether rabies vaccine and RIG/RmAbs are available at the treating facility or can be arranged.",
+      "modifies_nodes": ["n13_resource_check", "e03_start_rpep"],
+      "parameters": {
+        "vaccine_available": "TODO_manual_condition",
+        "rig_available": "TODO_manual_condition",
+        "rig_limited": "TODO_manual_condition",
+        "delivery_hours": "TODO_manual_value"
+      },
+      "source_trace": {
+        "who": ["q21"],
+        "oph": ["footnote x"]
+      },
+      "manual_notes": ""
+    }
+  ],
+
+  "derived_facts": [
+    {
+      "fact_id": "df_is_mammal",
+      "label": "Animal is a mammal",
+      "type": "boolean",
+      "source_fields": ["c04"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_is_bat",
+      "label": "Animal is a bat (confirmed or suspected)",
+      "type": "boolean",
+      "source_fields": ["c06", "c07", "c09", "c11"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_host_taxon",
+      "label": "Resolved host taxon ID for catalog lookup",
+      "type": "string",
+      "source_fields": ["c05", "c06", "c07"],
+      "derivation": "TODO_manual_logic: c07 enum → taxon; c05 fallback → small_rodent; c06 fallback → bat"
+    },
+    {
+      "fact_id": "df_bat_contact_ruled_out",
+      "label": "Bat contact can be ruled out",
+      "type": "boolean",
+      "source_fields": ["c08"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_bat_available_for_testing",
+      "label": "Bat is available for rabies testing",
+      "type": "boolean",
+      "source_fields": ["c10"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_bat_desiccated",
+      "label": "Bat is dead and desiccated (no residual risk)",
+      "type": "boolean",
+      "source_fields": ["c13", "c14"],
+      "derivation": "TODO_manual_logic: c13=yes AND c14=yes → true"
+    },
+    {
+      "fact_id": "df_bat_exposure_confidence",
+      "label": "Confidence level that bat exposure occurred",
+      "type": "enum",
+      "enum_values": ["confirmed", "probable", "possible", "unlikely", "ruled_out"],
+      "source_fields": ["c06", "c08", "c09", "c11", "c12"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_relevant_exposure",
+      "label": "Clinically relevant exposure occurred",
+      "type": "boolean",
+      "source_fields": ["c15", "c16"],
+      "derivation": "TODO_manual_logic: c15 any item selected → true; OR c16 category II/III → true"
+    },
+    {
+      "fact_id": "df_who_wound_category",
+      "label": "WHO wound/exposure category (I, II, or III)",
+      "type": "enum",
+      "enum_values": ["category_I", "category_II", "category_III"],
+      "source_fields": ["c16"],
+      "derivation": "TODO_manual_logic: pass-through from c16; if absent, derive from c15 items"
+    },
+    {
+      "fact_id": "df_exposure_type_detail",
+      "label": "Detailed exposure types (preserved from OPH multiselect)",
+      "type": "string_array",
+      "source_fields": ["c15"],
+      "derivation": "TODO_manual_logic: pass-through from c15 items"
+    },
+    {
+      "fact_id": "df_exposure_over_10_days",
+      "label": "Exposure occurred more than 10 days ago",
+      "type": "boolean",
+      "source_fields": ["c02", "c18"],
+      "derivation": "TODO_manual_logic: c18 direct; or compute from c02 vs current date"
+    },
+    {
+      "fact_id": "df_animal_alive_at_10_days",
+      "label": "Animal confirmed alive at 10-day mark",
+      "type": "boolean",
+      "source_fields": ["c19"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_is_child",
+      "label": "Victim is younger than 14 years",
+      "type": "boolean",
+      "source_fields": ["c20"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_has_severe_wounds",
+      "label": "Victim has multiple or deep wounds",
+      "type": "boolean",
+      "source_fields": ["c21"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_highly_innervated_site",
+      "label": "Wound is in a highly innervated area (head, neck, face, genitals, hands)",
+      "type": "boolean",
+      "source_fields": ["c17", "c22"],
+      "derivation": "TODO_manual_logic: c22 direct; or derive from c17 multiselect containing head/face/neck/genitals/hands"
+    },
+    {
+      "fact_id": "df_high_priority_flag",
+      "label": "WHO high-priority any-yes composite flag",
+      "type": "boolean",
+      "source_fields": ["c20", "c21", "c22"],
+      "derivation": "TODO_manual_logic: any of df_is_child, df_has_severe_wounds, df_highly_innervated_site → true"
+    },
+    {
+      "fact_id": "df_animal_rabies_signs",
+      "label": "Animal showed signs/behaviour compatible with rabies",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c24"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_animal_died_disappeared",
+      "label": "Animal died or disappeared within 10 days",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c25"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_animal_multiple_victims",
+      "label": "Animal bit 2 or more people or animals",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c26"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_animal_ownership_tier",
+      "label": "Animal ownership classification",
+      "type": "enum",
+      "enum_values": ["owned", "stray", "feral_or_wild", "unknown"],
+      "source_fields": ["c27", "c28"],
+      "derivation": "TODO_manual_logic: c27=yes → feral_or_wild; c28=yes → stray; neither → owned"
+    },
+    {
+      "fact_id": "df_animal_vaccinated",
+      "label": "Animal up-to-date on rabies vaccination",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c32"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_animal_provoked",
+      "label": "Animal was provoked to bite or scratch",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c34"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_concerning_animal_features_flag",
+      "label": "WHO concerning animal features any-yes composite flag",
+      "type": "boolean",
+      "source_fields": ["c24", "c25", "c26"],
+      "derivation": "TODO_manual_logic: any of df_animal_rabies_signs=yes, df_animal_died_disappeared=yes, df_animal_multiple_victims=yes → true; any=unknown → indeterminate"
+    },
+    {
+      "fact_id": "df_animal_available",
+      "label": "Animal available for observation or testing",
+      "type": "boolean",
+      "source_fields": ["c31"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_animal_tested",
+      "label": "Animal has been tested for rabies",
+      "type": "boolean",
+      "source_fields": ["c29"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_animal_test_result",
+      "label": "Animal rabies test result",
+      "type": "enum",
+      "enum_values": ["positive", "pending_or_inconclusive", "negative", "not_done"],
+      "source_fields": ["c30"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_prior_vaccination",
+      "label": "Patient has prior rabies vaccination history",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c35"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_recent_pep_complete",
+      "label": "Patient completed PEP/RPEP within past 3 months",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c36"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_valid_prior_series",
+      "label": "Patient has a valid prior vaccination series (per OPH interval criteria + serology)",
+      "type": "boolean",
+      "source_fields": ["c37", "c38", "c39", "c40"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_prior_dose_count",
+      "label": "Number of valid prior vaccine doses (OPH interval-validated)",
+      "type": "integer",
+      "source_fields": ["c40"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_prior_vaccination_reliable",
+      "label": "Prior vaccination is considered immunologically reliable (accounts for immunocompromise at time of prior vaccination)",
+      "type": "boolean",
+      "source_fields": ["c37", "c39", "c45"],
+      "derivation": "TODO_manual_logic: documentation available AND (adequate serology OR not immunocompromised at time of prior vaccination)"
+    },
+    {
+      "fact_id": "df_immunocompromised_current",
+      "label": "Patient is currently immunocompromised (any degree)",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c43"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_immunocompromised_severe",
+      "label": "Patient is currently moderate-to-severely immunocompromised or on chloroquine/hydroxychloroquine",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c44"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_immunocompromised_at_prior_vax",
+      "label": "Patient was immunocompromised at time of prior vaccination",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c45"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_who_high_risk",
+      "label": "WHO high-risk composite flag (footnote 9)",
+      "type": "boolean",
+      "source_fields": ["c46"],
+      "derivation": "TODO_manual_logic: WHO footnote 9 criteria: multiple bites, deep wounds, highly innervated sites, severe immunodeficiency, confirmed/probable rabid animal, bat exposure"
+    },
+    {
+      "fact_id": "df_pregnant",
+      "label": "Patient is currently pregnant",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c47"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_vaccine_allergy",
+      "label": "Patient has known allergy to rabies vaccine or RIG components",
+      "type": "ternary",
+      "enum_values": ["yes", "no", "unknown"],
+      "source_fields": ["c48"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_rig_limited",
+      "label": "RIG/RmAbs availability is limited",
+      "type": "boolean",
+      "source_fields": ["c49"],
+      "derivation": "TODO_manual_logic"
+    },
+    {
+      "fact_id": "df_host_risk_tier",
+      "label": "Host species risk tier from catalog lookup",
+      "type": "enum",
+      "enum_values": ["negligible", "low", "moderate", "high", "indeterminate"],
+      "source_fields": [],
+      "derivation": "TODO_manual_logic: resolved from df_host_taxon via zone-specific host profile catalog"
+    }
+  ],
+
+  "decision_tables": [
+    {
+      "table_id": "dt01_wound_category_to_treatment",
+      "label": "WHO Wound Category → Treatment Intensity",
+      "description": "Maps WHO wound category + prior vaccination status → vaccine regimen + RIG eligibility.",
+      "columns": ["df_who_wound_category", "df_prior_vaccination_reliable", "df_immunocompromised_current"],
+      "output_columns": ["vaccine_doses", "rig_indicated", "serology_indicated"],
+      "rows": "TODO_manual_rows"
+    },
+    {
+      "table_id": "dt02_host_risk_resolution",
+      "label": "Host Taxon + Zone → Risk Tier + Trigger Weight",
+      "description": "Resolves host species against epi zone catalog to determine risk tier and PEP trigger weight.",
+      "columns": ["df_host_taxon", "epi_zone_id"],
+      "output_columns": ["risk_tier", "pep_trigger_weight", "confidence"],
+      "rows": "TODO_manual_rows: populated from catalog"
+    },
+    {
+      "table_id": "dt03_prior_vaccination_regimen",
+      "label": "Prior Vaccination Status → Regimen Modification",
+      "description": "Determines how prior vaccination history modifies the PEP regimen (shortened schedule, RIG omission, serology requirements).",
+      "columns": ["df_prior_dose_count", "df_valid_prior_series", "df_immunocompromised_at_prior_vax", "df_recent_pep_complete"],
+      "output_columns": ["regimen_class", "rig_required", "serology_required", "additional_doses"],
+      "rows": "TODO_manual_rows"
+    }
+  ],
+
+  "endpoints": [
+    {
+      "endpoint_id": "e01_no_pep",
+      "label": "No Rabies PEP Indicated",
+      "recommendation_class_id": "no_pep_indicated",
+      "description": "Assessment complete: rabies PEP is not indicated for this exposure.",
+      "action_set": [
+        "Document assessment in patient chart",
+        "Provide wound care as appropriate",
+        "Advise patient on signs/symptoms warranting reassessment"
+      ],
+      "requires_public_health": false,
+      "requires_escalation": false,
+      "urgency": "routine",
+      "exit_conditions": "TODO_manual_conditions: list of node paths that lead here",
+      "manual_notes": ""
+    },
+    {
+      "endpoint_id": "e02_observe_test",
+      "label": "Observe / Test Animal and Reassess",
+      "recommendation_class_id": "observe_or_test_pathway",
+      "description": "Animal is available and should be observed (10/14 days) or tested. PEP may be deferred pending results, or started and discontinued if animal tests negative / remains healthy.",
+      "action_set": [
+        "Arrange animal observation or testing via public health / animal control",
+        "Thorough wound washing with soap and water (15 min) and antiseptic",
+        "Consider initiating PEP if observation/testing will be delayed",
+        "Schedule reassessment based on observation/test timeline",
+        "Notify public health authority"
+      ],
+      "requires_public_health": true,
+      "requires_escalation": false,
+      "urgency": "important",
+      "exit_conditions": "TODO_manual_conditions",
+      "manual_notes": "If PEP is started during observation and animal is confirmed healthy/negative, PEP can be discontinued."
+    },
+    {
+      "endpoint_id": "e03_start_rpep",
+      "label": "Start / Arrange RPEP",
+      "recommendation_class_id": "pep_recommended",
+      "description": "Rabies PEP is indicated. Regimen (vaccine doses, RIG eligibility) depends on wound category, prior vaccination status, and immunocompromise status.",
+      "action_set": [
+        "Thorough wound washing with soap and water (15 min) and antiseptic",
+        "Administer rabies vaccine per regimen",
+        "Administer RIG if indicated (WHO category III, vaccine-naive, infiltrate wound site)",
+        "Schedule follow-up doses",
+        "Notify public health authority"
+      ],
+      "requires_public_health": true,
+      "requires_escalation": true,
+      "urgency": "urgent",
+      "regimen_variants": {
+        "full_naive": "TODO_manual_detail: full PEP + RIG",
+        "shortened_previously_vaccinated": "TODO_manual_detail: 2-dose booster, no RIG",
+        "immunocompromised": "TODO_manual_detail: full PEP + RIG + serology at 2-4 weeks"
+      },
+      "exit_conditions": "TODO_manual_conditions",
+      "manual_notes": ""
+    },
+    {
+      "endpoint_id": "e04_start_rpep_contact_ph",
+      "label": "Start / Arrange RPEP — Contact Public Health",
+      "recommendation_class_id": "pep_recommended_ph_consult",
+      "description": "Rabies PEP is indicated and public health coordination is required prior to or concurrent with initiation (e.g., biologics delivery, travel-related exposure, resource-limited context).",
+      "action_set": [
+        "Contact public health authority by phone before or concurrent with PEP initiation",
+        "Thorough wound washing with soap and water (15 min) and antiseptic",
+        "Administer rabies vaccine per regimen when available",
+        "Administer RIG if indicated and available",
+        "Have patient weight available for RIG dosing",
+        "Provide call-back number for biologics coordination"
+      ],
+      "requires_public_health": true,
+      "requires_escalation": true,
+      "urgency": "urgent",
+      "exit_conditions": "TODO_manual_conditions",
+      "manual_notes": "OPH footnote x: Ontario will arrange delivery of biologics, typically within 2–4 hours."
+    },
+    {
+      "endpoint_id": "e05_continue_rpep",
+      "label": "Continue Existing RPEP Series",
+      "recommendation_class_id": "continue_existing_rpep",
+      "description": "Patient has already started RPEP for this exposure. Continue the current series as scheduled.",
+      "action_set": [
+        "Confirm current dose schedule",
+        "Administer next scheduled dose",
+        "Assess for adverse reactions",
+        "Coordinate follow-up with public health"
+      ],
+      "requires_public_health": true,
+      "requires_escalation": false,
+      "urgency": "important",
+      "exit_conditions": "TODO_manual_conditions",
+      "manual_notes": "OPH footnote xi: Ontario will coordinate follow-up doses."
+    },
+    {
+      "endpoint_id": "e06_expert_consult",
+      "label": "Expert / Public Health Consultation Required",
+      "recommendation_class_id": "expert_consultation_required",
+      "description": "Clinical scenario requires expert or public health consultation before a definitive recommendation can be made. May apply to: conflicting data, unusual species, travel-related exposure, uncertain vaccination history, immunocompromise interactions.",
+      "action_set": [
+        "Thorough wound washing with soap and water (15 min) and antiseptic",
+        "Contact public health or infectious disease specialist",
+        "Consider initiating PEP if consultation will be delayed and risk is non-trivial",
+        "Document reason for consultation referral"
+      ],
+      "requires_public_health": true,
+      "requires_escalation": true,
+      "urgency": "urgent",
+      "exit_conditions": "TODO_manual_conditions",
+      "manual_notes": ""
+    }
+  ],
+
+  "validation_rules": [
+    {
+      "rule_id": "vr01",
+      "description": "Every intake question (c01–c49) must be referenced by at least one derived fact or one node input_fields list.",
+      "status": "TODO_validate"
+    },
+    {
+      "rule_id": "vr02",
+      "description": "Every derived fact must be consumed by at least one node decision_logic or branch condition.",
+      "status": "TODO_validate"
+    },
+    {
+      "rule_id": "vr03",
+      "description": "Every node must have at least one branch that leads to an endpoint (no dead ends).",
+      "status": "TODO_validate"
+    },
+    {
+      "rule_id": "vr04",
+      "description": "Every endpoint must be reachable from the entry node via at least one path.",
+      "status": "TODO_validate"
+    },
+    {
+      "rule_id": "vr05",
+      "description": "WHO wound category II vs III distinction must be preserved through to endpoint regimen selection (not collapsed to boolean).",
+      "status": "TODO_validate"
+    },
+    {
+      "rule_id": "vr06",
+      "description": "OPH bat sub-tree (desiccated bat exit, minimal contact consult path) must be represented as distinct branches.",
+      "status": "TODO_validate"
+    },
+    {
+      "rule_id": "vr07",
+      "description": "Prior vaccination history must modify regimen at endpoints (shortened schedule, RIG omission) — not be discarded.",
+      "status": "TODO_validate"
+    },
+    {
+      "rule_id": "vr08",
+      "description": "Immunocompromise at time of prior vaccination (c45/df_immunocompromised_at_prior_vax) must feed back into df_prior_vaccination_reliable.",
+      "status": "TODO_validate"
+    },
+    {
+      "rule_id": "vr09",
+      "description": "Geography must resolve to a known epi zone or flag as unknown — no silent defaults.",
+      "status": "TODO_validate"
+    },
+    {
+      "rule_id": "vr10",
+      "description": "All source traces must account for every WHO question (q01–q22) and every OPH question (q01–q27) at least once across all nodes.",
+      "status": "TODO_validate"
+    }
+  ],
+
+  "notes": [
+    "This is a skeleton file. All decision_logic and branch conditions are placeholders (TODO_manual_*) for manual completion.",
+    "Node ordering reflects a sensible clinical assessment sequence but is not strictly linear — branches may skip nodes or loop back.",
+    "The derived_facts layer exists to decouple raw intake answers from decision logic. Nodes should reference derived facts, not raw question IDs, in their branch conditions.",
+    "Policy overlays are jurisdiction-specific modifiers applied on top of the core flow. They should not alter the node structure, only the branch conditions and thresholds.",
+    "Decision tables are provided for the most complex multi-variable routing decisions. They are intended to be filled in as lookup matrices.",
+    "The audit from the intake wiring review identified specific semantic-loss risks (WHO category collapse, geography silent defaults, desiccated bat, positive test). This flow skeleton addresses each of those as distinct branching paths.",
+    "The current engine (core/engine.ts) implements a subset of this flow. The skeleton is designed to eventually replace or extend the engine rules."
+  ]
+}
