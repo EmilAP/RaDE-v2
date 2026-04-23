@@ -3,6 +3,7 @@
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "types": ["node"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -11,6 +12,6 @@
     "outDir": "dist",
     "rootDir": "."
   },
-  "include": ["core/**/*", "renderers/**/*", "adapters/**/*", "app/**/*", "index.ts"],
+  "include": ["core/**/*", "intake/**/*", "renderers/**/*", "adapters/**/*", "manifests/**/*", "app/**/*", "index.ts"],
   "exclude": ["node_modules", "dist", "tests", "examples"]
 }

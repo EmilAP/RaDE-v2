@@ -3,7 +3,7 @@
   "title": "Canonical Rabies PEP Decision Flow",
   "version": "0.1.0",
   "status": "skeleton",
-  "description": "Skeleton decision flow for rabies post-exposure prophylaxis. Merges WHO SEARO and Ontario (OPH) clinical logic into a single canonical structure. All branch conditions are placeholders for manual completion.",
+  "description": "Skeleton decision flow for rabies post-exposure prophylaxis. Merges WHO SEARO and Ontario (ON) clinical logic into a single canonical structure. All branch conditions are placeholders for manual completion.",
 
   "sources": [
     {
@@ -29,7 +29,7 @@
   ],
 
   "intake_dependency": {
-    "schema_id": "canonical_rabies_intake_v1",
+    "schema_id": "canonical_rabies_intake_v2",
     "description": "This flow consumes answers from the canonical rabies intake checklist. Intake question IDs are referenced in node input_fields as c01–c49."
   },
 
@@ -365,7 +365,7 @@
           "who": ["q19", "q20"],
           "on": ["q17", "q18", "q20", "q23", "q24", "q25", "q26", "q27"]
         },
-        "manual_notes": "OPH has a complex sub-tree for prior vaccination with dose counting, interval validation, and serology requirements. WHO uses simpler yes/no prior vaccination + PEP <3 months. Both must be represented. ON footnote v: validity of vaccine received outside Canada may be uncertain."
+        "manual_notes": "ON has a complex sub-tree for prior vaccination with dose counting, interval validation, and serology requirements. WHO uses simpler yes/no prior vaccination + PEP <3 months. Both must be represented. ON footnote v: validity of vaccine received outside Canada may be uncertain."
       },
       {
         "node_id": "n11_patient_modifiers",
@@ -397,7 +397,7 @@
           "who": ["q18", "q22"],
           "on": ["q19", "q21", "q22"]
         },
-        "manual_notes": "OPH distinguishes c43 (any immunocompromise) from c44 (moderate-to-severe). c45 (immunocompromised at time of prior vaccination) affects validity of prior series — must feed back to df_prior_vaccination_reliable. WHO footnote 9 defines high-risk composite."
+        "manual_notes": "ON distinguishes c43 (any immunocompromise) from c44 (moderate-to-severe). c45 (immunocompromised at time of prior vaccination) affects validity of prior series — must feed back to df_prior_vaccination_reliable. WHO footnote 9 defines high-risk composite."
       },
       {
         "node_id": "n12_wound_category_routing",
@@ -802,7 +802,7 @@
     },
     {
       "fact_id": "df_prior_dose_count",
-      "label": "Number of valid prior vaccine doses (OPH interval-validated)",
+      "label": "Number of valid prior vaccine doses (ON interval-validated)",
       "type": "integer",
       "source_fields": ["c40"],
       "derivation": "TODO_manual_logic"
@@ -980,7 +980,7 @@
       "requires_escalation": true,
       "urgency": "urgent",
       "exit_conditions": "TODO_manual_conditions",
-      "manual_notes": "OPH footnote x: Ontario will arrange delivery of biologics, typically within 2–4 hours."
+      "manual_notes": "ON footnote x: Ontario will arrange delivery of biologics, typically within 2–4 hours."
     },
     {
       "endpoint_id": "e05_continue_rpep",
@@ -997,7 +997,7 @@
       "requires_escalation": false,
       "urgency": "important",
       "exit_conditions": "TODO_manual_conditions",
-      "manual_notes": "OPH footnote xi: Ontario will coordinate follow-up doses."
+      "manual_notes": "ON footnote xi: Ontario will coordinate follow-up doses."
     },
     {
       "endpoint_id": "e06_expert_consult",
@@ -1046,7 +1046,7 @@
     },
     {
       "rule_id": "vr06",
-      "description": "OPH bat sub-tree (desiccated bat exit, minimal contact consult path) must be represented as distinct branches.",
+      "description": "ON bat sub-tree (desiccated bat exit, minimal contact consult path) must be represented as distinct branches.",
       "status": "TODO_validate"
     },
     {

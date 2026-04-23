@@ -91,6 +91,7 @@ export type FollowUpTask = {
   task_type: string;
 };
 
+/** @deprecated Use core/consult/types.ts::ConsultRecommendation plus EngineDecision. */
 export type Assessment = {
   assessment_id: string;
   case_id: string;
@@ -138,12 +139,14 @@ export type ClinicalCase = {
 
 // ── Envelope ───────────────────────────────────────────────────────────────
 
+/** @deprecated Use core/consult/state.ts::ConsultState. */
 export type WorkflowStatus =
   | "intake"
   | "assessed"
   | "action_required"
   | "completed";
 
+/** @deprecated Use core/consult/types.ts::CanonicalConsult. */
 export type CaseEnvelope = {
   envelope_id: string;
   schema_version: "0.1.0";

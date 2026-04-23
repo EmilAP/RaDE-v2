@@ -8,7 +8,13 @@
     "build": "tsc",
     "test": "vitest run",
     "dev": "tsx app/server.ts",
-    "example": "tsx examples/raccoon-bite.ts"
+    "example": "tsx examples/raccoon-bite.ts",
+    "example:consult-loop": "tsx examples/consult-loop.ts",
+    "example:adapters": "tsx examples/adapter-smoke.ts",
+    "example:openemr-write": "tsx examples/openemr-write.ts",
+    "example:dhis2": "tsx examples/dhis2-export.ts",
+    "example:dhis2-validate": "tsx examples/dhis2-validate.ts",
+    "intake": "tsx app/server.ts"
   },
   "dependencies": {
     "hono": "^4.7.0",

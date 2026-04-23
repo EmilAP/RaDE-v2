@@ -9,8 +9,16 @@ import type { AssessmentInput } from "../core/types";
 import { runAssessment } from "../core/pipeline";
 import { renderClinicianNote } from "../renderers/clinician";
 import { buildFhirOutput } from "../adapters/fhir";
+import intake from "./intake-routes";
+import consults from "./consult-routes";
+import ph from "./ph-routes";
 
 const app = new Hono();
+
+// Mount intake UI + OpenEMR integration
+app.route("/intake", intake);
+app.route("/consults", consults);
+app.route("/ph", ph);
 
 app.get("/", (c) =>
   c.json({
@@ -19,6 +27,13 @@ app.get("/", (c) =>
     endpoints: {
       "GET /health": "Health check",
       "POST /assess": "Run rabies exposure assessment",
+      "GET /intake": "Rabies PEP intake form (UI)",
+      "GET /intake/questions": "Canonical questionnaire JSON",
+      "GET /intake/patients": "List OpenEMR patients",
+      "POST /intake/submit": "Submit intake → OpenEMR",
+      "GET /consults": "List consult relay items",
+      "POST /consults": "Submit consult to the workflow-first relay",
+      "GET /ph": "Public health review queue",
     },
   }),
 );
